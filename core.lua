@@ -141,6 +141,6 @@ function addon:UPDATE_FACTION()
   local _
   if self._supplyFaction then
     _,_, self._standing = GetFactionInfoByID(self._supplyFaction)
-    self._threshold = (self._standing < FACTION_FRIENDLY) and 10 or (self._standing == FACTION_HONORED) and 25 or 0
+    self._threshold = (self._standing < FACTION_FRIENDLY) and 10 or (self._standing < FACTION_HONORED) and 25 or 0
   end
 end
