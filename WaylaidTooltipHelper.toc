@@ -1,0 +1,8 @@
+## Interface: 11500
+## Title: Waylaid Tooltip Helper
+## Author: Roadblock
+## Notes: Shows rewards for Waylaid Supply boxes and on Items used to fill them.
+## Version: 1.0
+
+locales.lua
+core.lua
