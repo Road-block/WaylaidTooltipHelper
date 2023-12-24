@@ -16,17 +16,20 @@ if LOCALE == "ruRU" then
   L["Unfilled: +"] = "Unfilled: +"
   L["Filled: +"] = "Filled: +"
   L[" Rep, "] = " Rep, "
+  L["%s (Lvl %d)"] = "%s (Lvl %d)"
   return
 elseif LOCALE == "frFR" then
   L["No Reputation with "] = "No Reputation with "
   L["Unfilled: +"] = "Unfilled: +"
   L["Filled: +"] = "Filled: +"
   L[" Rep, "] = " Rep, "
+  L["%s (Lvl %d)"] = "%s (Lvl %d)"
   return
 elseif LOCALE == "deDE" then
   L["No Reputation with "] = "No Reputation with "
   L["Unfilled: +"] = "Unfilled: +"
   L["Filled: +"] = "Filled: +"
   L[" Rep, "] = " Rep, "
+  L["%s (Lvl %d)"] = "%s (Lvl %d)"
   return
 end

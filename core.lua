@@ -93,7 +93,7 @@ function addon:AddTipInfo()
   local itemName, itemLink = tooltip:GetItem()
   local itemID = itemLink and itemLink:match("item:(%d+):")
   itemID = tonumber(itemID)
-  local repFilled, repUnfilled, moneyFilled, moneyUnfilled, itemLevel, supplyName
+  local repFilled, repUnfilled, moneyFilled, moneyUnfilled, itemLevel, supplyName, supplyLevel
   local noRep, givesRep, filledReward, unfilledReward, usedFor
   if itemID then
     local supply = Supplies[itemID]
@@ -101,7 +101,7 @@ function addon:AddTipInfo()
     if supply then
       repFilled, repUnfilled, moneyFilled, moneyUnfilled, itemLevel = addon:SupplyDetails(itemID)
     elseif needed then
-      supplyName = addon.supplyCache[needed][1]
+      supplyName, supplyLevel = addon.supplyCache[needed][1], addon.supplyCache[needed][2]
     end
     if itemLevel then
       if itemLevel < addon._threshold then
@@ -112,7 +112,7 @@ function addon:AddTipInfo()
         unfilledReward = L["Unfilled: +"]..repUnfilled..L[" Rep, "]..GetMoneyString(moneyUnfilled)
       end
     elseif supplyName then
-      usedFor = YELLOW_FONT_COLOR:WrapTextInColorCode(supplyName)
+      usedFor = YELLOW_FONT_COLOR:WrapTextInColorCode(format(L["%s (Lvl %d)"],supplyName,supplyLevel))
     end
     if givesRep then
       tooltip:AddDoubleLine(givesRep..filledReward,unfilledReward)
