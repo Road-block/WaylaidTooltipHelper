@@ -17,6 +17,7 @@ if LOCALE == "ruRU" then
   L["Filled: +"] = "Filled: +"
   L[" Rep, "] = " Rep, "
   L["%s (Lvl %d)"] = "%s (Lvl %d)"
+  L[" (P%d)"] = " (P%d)"
   return
 elseif LOCALE == "frFR" then
   L["No Reputation with "] = "No Reputation with "
@@ -24,6 +25,7 @@ elseif LOCALE == "frFR" then
   L["Filled: +"] = "Filled: +"
   L[" Rep, "] = " Rep, "
   L["%s (Lvl %d)"] = "%s (Lvl %d)"
+  L[" (P%d)"] = " (P%d)"
   return
 elseif LOCALE == "deDE" then
   L["No Reputation with "] = "No Reputation with "
@@ -31,5 +33,6 @@ elseif LOCALE == "deDE" then
   L["Filled: +"] = "Filled: +"
   L[" Rep, "] = " Rep, "
   L["%s (Lvl %d)"] = "%s (Lvl %d)"
+  L[" (P%d)"] = " (P%d)"
   return
 end
