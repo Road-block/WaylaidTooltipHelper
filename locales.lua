@@ -12,27 +12,27 @@ local LOCALE = GetLocale()
 
 -- replace the parts after = if you want to help with localization
 if LOCALE == "ruRU" then
-  L["No Reputation with "] = "No Reputation with "
+  L["Too low for "] = "Too low for "
   L["Unfilled: +"] = "Unfilled: +"
   L["Filled: +"] = "Filled: +"
   L[" Rep, "] = " Rep, "
-  L["%s (Lvl %d)"] = "%s (Lvl %d)"
+  L["Lvl %d %s (x%d)"] = "Lvl %d %s (x%d)"
   L[" (P%d)"] = " (P%d)"
   return
 elseif LOCALE == "frFR" then
-  L["No Reputation with "] = "No Reputation with "
+  L["Too low for "] = "Too low for "
   L["Unfilled: +"] = "Unfilled: +"
   L["Filled: +"] = "Filled: +"
   L[" Rep, "] = " Rep, "
-  L["%s (Lvl %d)"] = "%s (Lvl %d)"
+  L["Lvl %d %s (x%d)"] = "Lvl %d %s (x%d)"
   L[" (P%d)"] = " (P%d)"
   return
 elseif LOCALE == "deDE" then
-  L["No Reputation with "] = "No Reputation with "
+  L["Too low for "] = "Too low for "
   L["Unfilled: +"] = "Unfilled: +"
   L["Filled: +"] = "Filled: +"
   L[" Rep, "] = " Rep, "
-  L["%s (Lvl %d)"] = "%s (Lvl %d)"
+  L["Lvl %d %s (x%d)"] = "Lvl %d %s (x%d)"
   L[" (P%d)"] = " (P%d)"
   return
 end
