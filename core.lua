@@ -15,7 +15,7 @@ f:SetScript("OnEvent", f.OnEvent)
 
 local COLOR_STRONG_CYAN = CreateColor(0,198/255,209/255)
 addon.label = COLOR_STRONG_CYAN:WrapTextInColorCode(addonName)
-addon.short = COLOR_STRONG_CYAN:WrapTextInColorCode("WtH")
+addon.short = COLOR_STRONG_CYAN:WrapTextInColorCode("WttH")
 local FACTION_NEUTRAL, FACTION_FRIENDLY, FACTION_HONORED, FACTION_REVERED, FACTION_EXALTED = 4,5,6,7,8
 local FACTION_AZEROTH_COMMERCE, FACTION_DUROTAR_SUPPLY = 2586, 2587
 
@@ -114,6 +114,8 @@ function addon:Print(msg)
 end
 
 function addon:Alert(mapID)
+  if not self.db.alert then return end
+  if UnitOnTaxi("player") then return end
   if mapID then
     local turninInfo = factionNPCS[self._supplyFaction][mapID]
     if turninInfo then
@@ -318,6 +320,10 @@ function addon:ADDON_LOADED(...)
       self.RemoveWaypoint = TomTom.RemoveWaypoint
     end
   end
+  if ... == addonName then
+    WaylaidTooltipHelperSVPC = WaylaidTooltipHelperSVPC or {alert=true}
+    addon.db = WaylaidTooltipHelperSVPC
+  end
 end
 
 function addon:PLAYER_LOGIN()
@@ -363,4 +369,23 @@ function addon:ZONE_CHANGED_NEW_AREA()
   self:Alert(mapID)
 end
 
+local addon_upper, addon_lower = addonName:upper(), addonName:lower()
+SlashCmdList[addon_upper] = function(msg)
+  local option = {}
+  msg = (msg or ""):trim()
+  msg = msg:lower()
+  for token in msg:gmatch("(%S+)") do
+    tinsert(option,token)
+  end
+  if option[1]=="alert" then
+    WaylaidTooltipHelperSVPC[option[1]] = not WaylaidTooltipHelperSVPC[option[1]]
+    addon:Print("Shipment Delivery Alerts: "..(WaylaidTooltipHelperSVPC.alert and GREEN_FONT_COLOR:WrapTextInColorCode"ON" or RED_FONT_COLOR:WrapTextInColorCode("OFF")))
+  end
+  if not msg or msg == "" then
+    addon:Print("/wtth alert")
+    addon:Print("  to toggle town shipment delivery alerts")
+  end
+end
+_G["SLASH_"..addon_upper.."1"] = "/"..addon_lower
+_G["SLASH_"..addon_upper.."2"] = "/wtth"
 --_G[addonName] = addon
