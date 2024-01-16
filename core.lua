@@ -7,6 +7,9 @@ f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("UPDATE_FACTION") -- rep standing on the other hand can, but let's update only on relevant events
 f:RegisterEvent("PLAYER_LEVEL_UP") -- xp to money conversion
 f:RegisterEvent("ZONE_CHANGED_NEW_AREA") -- turnin alert
+f:RegisterEvent("PLAYER_CONTROL_LOST") -- turnin alert
+f:RegisterEvent("PLAYER_ALIVE") -- turnin alert
+f:RegisterEvent("PLAYER_UNGHOST") -- turnin alert
 f:RegisterEvent("ADDON_LOADED")
 f.OnEvent = function(_,event,...)
   return addon[event] and addon[event](addon,...)
@@ -76,6 +79,7 @@ local Supplies = {
 -- questlevel, rep, money, exp
 local Filled = {
   -- Phase 1
+  --[2589] = {5, 200, 400, 80}, -- debug
   [211365] = { 9, 300, 600, 105 },
   [211367] = { 12, 450, 1500, 120 },
   [211839] = { 18, 500, 1500, 195 },
@@ -126,13 +130,20 @@ function addon:Alert(mapID)
         if not self._lastAlert or (now-self._lastAlert) > 30 then
           self._lastAlert = now
           PlaySound(SOUNDKIT.UI_STORE_UNWRAP)
-          RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["Turn in %s to %s"],filledSupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 15)
-          addon:Print(format(L["Turn in %s to %s"],filledSupply,supplyOfficer))
+          RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
+          addon:Print(format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer))
           if self.AddWaypoint then
+            if self._alertWaypoint then
+              self.RemoveWaypoint(TomTom,self._alertWaypoint) -- cleanup old waypoint
+            end
             tomtomOpt.title = supplyOfficer
-            self.AddWaypoint(TomTom,mapID,map_x/100,map_y/100,tomtomOpt)
+            self._alertWaypoint = self.AddWaypoint(TomTom,mapID,map_x/100,map_y/100,tomtomOpt)
           end
         end
+      end
+    else
+      if self._alertWaypoint then
+        self.RemoveWaypoint(TomTom,self._alertWaypoint) -- cleanup if we left town
       end
     end
   end
@@ -349,6 +360,9 @@ function addon:PLAYER_ENTERING_WORLD(...)
   end
   local mapID = C_Map.GetBestMapForUnit("player")
   self:Alert(mapID)
+  if UnitOnTaxi("player") then
+    f:RegisterEvent("PLAYER_CONTROL_GAINED")
+  end
 end
 
 function addon:UPDATE_FACTION()
@@ -368,6 +382,22 @@ function addon:ZONE_CHANGED_NEW_AREA()
   local mapID = C_Map.GetBestMapForUnit("player")
   self:Alert(mapID)
 end
+addon.PLAYER_UNGHOST = addon.ZONE_CHANGED_NEW_AREA
+addon.PLAYER_ALIVE = addon.ZONE_CHANGED_NEW_AREA
+
+function addon:PLAYER_CONTROL_LOST()
+  C_Timer.After(1,function()
+    if UnitOnTaxi("player") then
+      f:RegisterEvent("PLAYER_CONTROL_GAINED")
+    end
+  end)
+end
+function addon:PLAYER_CONTROL_GAINED()
+  f:UnregisterEvent("PLAYER_CONTROL_GAINED")
+  C_Timer.After(1,function()
+    addon:ZONE_CHANGED_NEW_AREA()
+  end)
+end
 
 local addon_upper, addon_lower = addonName:upper(), addonName:lower()
 SlashCmdList[addon_upper] = function(msg)
@@ -380,6 +410,13 @@ SlashCmdList[addon_upper] = function(msg)
   if option[1]=="alert" then
     WaylaidTooltipHelperSVPC[option[1]] = not WaylaidTooltipHelperSVPC[option[1]]
     addon:Print("Shipment Delivery Alerts: "..(WaylaidTooltipHelperSVPC.alert and GREEN_FONT_COLOR:WrapTextInColorCode"ON" or RED_FONT_COLOR:WrapTextInColorCode("OFF")))
+    if WaylaidTooltipHelperSVPC.alert then
+      addon:ZONE_CHANGED_NEW_AREA()
+    else
+      if addon._alertWaypoint then
+        addon.RemoveWaypoint(TomTom,addon._alertWaypoint)
+      end
+    end
   end
   if not msg or msg == "" then
     addon:Print("/wtth alert")
