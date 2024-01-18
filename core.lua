@@ -119,19 +119,27 @@ end
 
 function addon:Alert(mapID)
   if not self.db.alert then return end
+  local alertOption = self.db.alert
   if UnitOnTaxi("player") then return end
   if mapID then
     local turninInfo = factionNPCS[self._supplyFaction][mapID]
     if turninInfo then
       local supplyOfficer,npcid,map_x,map_y = unpack(turninInfo,1,4)
       local filledSupply = self:HaveFilledSupply()
-      if filledSupply then
+      local emptySupply = self:HaveEmptySupply()
+      if filledSupply or emptySupply then
         local now = GetTime()
         if not self._lastAlert or (now-self._lastAlert) > 30 then
           self._lastAlert = now
           PlaySound(SOUNDKIT.UI_STORE_UNWRAP)
-          RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
-          addon:Print(format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer))
+          if emptySupply and (alertOption==true or alertOption=="empty") then
+            RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],emptySupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
+            addon:Print(format(L["You can turn-in %s to %s"],emptySupply,supplyOfficer))
+          end
+          if filledSupply and (alertOption==true or alertOption=="filled") then
+            RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
+            addon:Print(format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer))
+          end
           if self.AddWaypoint then
             if self._alertWaypoint then
               self.RemoveWaypoint(TomTom,self._alertWaypoint) -- cleanup old waypoint
@@ -181,6 +189,16 @@ function addon:HaveFilledSupply()
     local count = GetItemCount(item, true) -- include bank, we'll only trigger in town anyway
     if count > 0 then
       return addon.filledCache[item][1]
+    end
+  end
+  return false
+end
+
+function addon:HaveEmptySupply()
+  for item,info in pairs(Supplies) do
+    local count = GetItemCount(item, true)
+    if count > 0 then
+      return addon.supplyCache[item][1]
     end
   end
   return false
@@ -407,9 +425,17 @@ SlashCmdList[addon_upper] = function(msg)
   for token in msg:gmatch("(%S+)") do
     tinsert(option,token)
   end
-  if option[1]=="alert" then
-    WaylaidTooltipHelperSVPC[option[1]] = not WaylaidTooltipHelperSVPC[option[1]]
-    addon:Print("Shipment Delivery Alerts: "..(WaylaidTooltipHelperSVPC.alert and GREEN_FONT_COLOR:WrapTextInColorCode"ON" or RED_FONT_COLOR:WrapTextInColorCode("OFF")))
+  local cmd, arg1, arg2 = option[1], option[2], option[3]
+  if cmd=="alert" then
+    if arg1 and #arg1>0 then
+      if arg1 == "filled" or arg1 == "empty" then
+        WaylaidTooltipHelperSVPC[cmd] = arg1
+        addon:Print("Shipment Delivery Alerts: "..GREEN_FONT_COLOR:WrapTextInColorCode("ON")..format(" (%s)",WaylaidTooltipHelperSVPC.alert))
+      end
+    else
+      WaylaidTooltipHelperSVPC[cmd] = not WaylaidTooltipHelperSVPC[cmd]
+      addon:Print("Shipment Delivery Alerts: "..(WaylaidTooltipHelperSVPC.alert and GREEN_FONT_COLOR:WrapTextInColorCode("ON") or RED_FONT_COLOR:WrapTextInColorCode("OFF")))
+    end
     if WaylaidTooltipHelperSVPC.alert then
       addon:ZONE_CHANGED_NEW_AREA()
     else
@@ -419,8 +445,9 @@ SlashCmdList[addon_upper] = function(msg)
     end
   end
   if not msg or msg == "" then
-    addon:Print("/wtth alert")
+    addon:Print("/wtth alert [filled||empty]")
     addon:Print("  to toggle town shipment delivery alerts")
+    addon:Print("current: "..(WaylaidTooltipHelperSVPC.alert and GREEN_FONT_COLOR:WrapTextInColorCode("ON") or RED_FONT_COLOR:WrapTextInColorCode("OFF"))..(type(WaylaidTooltipHelperSVPC.alert)=="string" and format(" (%s)",WaylaidTooltipHelperSVPC.alert) or ""))
   end
 end
 _G["SLASH_"..addon_upper.."1"] = "/"..addon_lower
