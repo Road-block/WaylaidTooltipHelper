@@ -105,6 +105,7 @@ local tomtomOpt = {
   title = L["Supply Officer"],
   from = addonName,
   persistent = false,
+  silent = true,
   minimap = true,
   world = false,
   crazy = true,
@@ -120,6 +121,7 @@ end
 function addon:Alert(mapID)
   if not self.db.alert then return end
   local alertOption = self.db.alert
+  local tomtomOption = self.db.tomtom
   if UnitOnTaxi("player") then return end
   if mapID then
     local turninInfo = factionNPCS[self._supplyFaction][mapID]
@@ -144,8 +146,10 @@ function addon:Alert(mapID)
             if self._alertWaypoint then
               self.RemoveWaypoint(TomTom,self._alertWaypoint) -- cleanup old waypoint
             end
-            tomtomOpt.title = supplyOfficer
-            self._alertWaypoint = self.AddWaypoint(TomTom,mapID,map_x/100,map_y/100,tomtomOpt)
+            if tomtomOption then
+              tomtomOpt.title = supplyOfficer
+              self._alertWaypoint = self.AddWaypoint(TomTom,mapID,map_x/100,map_y/100,tomtomOpt)
+            end
           end
         end
       end
@@ -351,6 +355,9 @@ function addon:ADDON_LOADED(...)
   end
   if ... == addonName then
     WaylaidTooltipHelperSVPC = WaylaidTooltipHelperSVPC or {alert=true}
+    if WaylaidTooltipHelperSVPC.tomtom == nil then
+      WaylaidTooltipHelperSVPC.tomtom = true
+    end
     addon.db = WaylaidTooltipHelperSVPC
   end
 end
@@ -443,11 +450,19 @@ SlashCmdList[addon_upper] = function(msg)
         addon.RemoveWaypoint(TomTom,addon._alertWaypoint)
       end
     end
+  elseif cmd=="tomtom" then
+    WaylaidTooltipHelperSVPC[cmd] = not WaylaidTooltipHelperSVPC[cmd]
+    addon:Print("TomTom arrow:"..(WaylaidTooltipHelperSVPC.tomtom and GREEN_FONT_COLOR:WrapTextInColorCode("ON") or RED_FONT_COLOR:WrapTextInColorCode("OFF")))
+    if not WaylaidTooltipHelperSVPC.tomtom and addon._alertWaypoint then
+      addon.RemoveWaypoint(TomTom,addon._alertWaypoint)
+    end
   end
   if not msg or msg == "" then
     addon:Print("/wtth alert [filled||empty]")
     addon:Print("  to toggle town shipment delivery alerts")
-    addon:Print("current: "..(WaylaidTooltipHelperSVPC.alert and GREEN_FONT_COLOR:WrapTextInColorCode("ON") or RED_FONT_COLOR:WrapTextInColorCode("OFF"))..(type(WaylaidTooltipHelperSVPC.alert)=="string" and format(" (%s)",WaylaidTooltipHelperSVPC.alert) or ""))
+    addon:Print("/wtth tomtom")
+    addon:Print("  to toggle TomTom arrow")
+    addon:Print("alert: "..(WaylaidTooltipHelperSVPC.alert and GREEN_FONT_COLOR:WrapTextInColorCode("ON") or RED_FONT_COLOR:WrapTextInColorCode("OFF"))..(type(WaylaidTooltipHelperSVPC.alert)=="string" and format(" (%s)",WaylaidTooltipHelperSVPC.alert) or "")..",tomtom: "..(WaylaidTooltipHelperSVPC.tomtom and GREEN_FONT_COLOR:WrapTextInColorCode("ON") or RED_FONT_COLOR:WrapTextInColorCode("OFF")))
   end
 end
 _G["SLASH_"..addon_upper.."1"] = "/"..addon_lower
