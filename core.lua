@@ -23,7 +23,7 @@ local FACTION_NEUTRAL, FACTION_FRIENDLY, FACTION_HONORED, FACTION_REVERED, FACTI
 local FACTION_AZEROTH_COMMERCE, FACTION_DUROTAR_SUPPLY = 2586, 2587
 
 local sodSeasonID = Enum.SeasonID.SeasonOfDiscovery or Enum.SeasonID.Placeholder
-local sod_phases = {[25]=1, [40]=2, [50]=3, [60]=4} --
+local sod_phases = {[25]=1, [40]=2, [50]=3, [60]=4} -- we know there's more phases after 60, will have to find another way
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 local isSoD = isClassic and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason() == sodSeasonID
 local SoD_Phase = isSoD and sod_phases[(GetEffectivePlayerMaxLevel())]
@@ -99,6 +99,32 @@ local factionNPCS = {
     [1458] = {L["Gishah <Supply Officer>"], 214098, 65.6, 38.2}, -- Undercity
   },
 }
+local levelToStanding = {
+  [10] = _G["FACTION_STANDING_LABEL"..FACTION_NEUTRAL]..KEY_PLUS,
+  [25] = _G["FACTION_STANDING_LABEL"..FACTION_FRIENDLY]..KEY_PLUS,
+  [40] = _G["FACTION_STANDING_LABEL"..FACTION_HONORED]..KEY_PLUS,
+  [50] = _G["FACTION_STANDING_LABEL"..FACTION_REVERED]..KEY_PLUS,
+  [60] = _G["FACTION_STANDING_LABEL"..FACTION_EXALTED]..KEY_PLUS, -- ??
+}
+local levelToStandingID = {
+  [10] = FACTION_NEUTRAL,
+  [25] = FACTION_FRIENDLY,
+  [40] = FACTION_HONORED,
+  [50] = FACTION_REVERED,
+  [60] = FACTION_EXALTED,
+}
+local standingToPhase = {
+  [FACTION_FRIENDLY] = 1, -- capped at start honored
+  [FACTION_HONORED] = 2, -- capped at start revered
+  [FACTION_REVERED] = 3, -- capped at start exalted ??
+  [FACTION_EXALTED] = 4, -- ??
+}
+local phaseToStanding = {
+  [1] = FACTION_FRIENDLY,
+  [2] = FACTION_HONORED,
+  [3] = FACTION_REVERED,
+  [4] = FACTION_EXALTED,
+}
 
 local tomtomOpt = {
   desc = L["A Full Shipment"],
@@ -120,6 +146,8 @@ end
 
 function addon:Alert(mapID)
   if not self.db.alert then return end
+  local repCapped = self._standing and standingToPhase[self._standing] > SoD_Phase
+  -- if repCapped then return end
   local alertOption = self.db.alert
   local tomtomOption = self.db.tomtom
   if UnitOnTaxi("player") then return end
@@ -133,22 +161,26 @@ function addon:Alert(mapID)
         local now = GetTime()
         if not self._lastAlert or (now-self._lastAlert) > 30 then
           self._lastAlert = now
-          PlaySound(SOUNDKIT.UI_STORE_UNWRAP)
-          if emptySupply and (alertOption==true or alertOption=="empty") then
-            RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],emptySupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
-            addon:Print(format(L["You can turn-in %s to %s"],emptySupply,supplyOfficer))
-          end
-          if filledSupply and (alertOption==true or alertOption=="filled") then
-            RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
-            addon:Print(format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer))
-          end
-          if self.AddWaypoint then
-            if self._alertWaypoint then
-              self.RemoveWaypoint(TomTom,self._alertWaypoint) -- cleanup old waypoint
+          if repCapped then
+            addon:Print(format(L["You carry %s turn-ins but your P%d rep gain is maxed."],self._factionName, SoD_Phase))
+          else
+            PlaySound(SOUNDKIT.UI_STORE_UNWRAP)
+            if emptySupply and (alertOption==true or alertOption=="empty") then
+              RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],emptySupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
+              addon:Print(format(L["You can turn-in %s to %s"],emptySupply,supplyOfficer))
             end
-            if tomtomOption then
-              tomtomOpt.title = supplyOfficer
-              self._alertWaypoint = self.AddWaypoint(TomTom,mapID,map_x/100,map_y/100,tomtomOpt)
+            if filledSupply and (alertOption==true or alertOption=="filled") then
+              RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
+              addon:Print(format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer))
+            end
+            if self.AddWaypoint then
+              if self._alertWaypoint then
+                self.RemoveWaypoint(TomTom,self._alertWaypoint) -- cleanup old waypoint
+              end
+              if tomtomOption then
+                tomtomOpt.title = supplyOfficer
+                self._alertWaypoint = self.AddWaypoint(TomTom,mapID,map_x/100,map_y/100,tomtomOpt)
+              end
             end
           end
         end
@@ -188,21 +220,37 @@ function addon:CacheItems()
   end
 end
 
-function addon:HaveFilledSupply()
+function addon:HaveFilledSupply(withRep)
   for item,info in pairs(Filled) do
     local count = GetItemCount(item, true) -- include bank, we'll only trigger in town anyway
     if count > 0 then
-      return addon.filledCache[item][1]
+      local itemName, itemLevel = unpack(addon.filledCache[item])
+      if not withRep then
+        return itemName
+      else
+        local itemFactionLevel = levelToStandingID[itemLevel]
+        if not (self._standing > itemFactionLevel) then
+          return itemName
+        end
+      end
     end
   end
   return false
 end
 
-function addon:HaveEmptySupply()
+function addon:HaveEmptySupply(withRep)
   for item,info in pairs(Supplies) do
     local count = GetItemCount(item, true)
     if count > 0 then
-      return addon.supplyCache[item][1]
+      local itemName, itemLevel = unpack(addon.supplyCache[item])
+      if not withRep then
+        return itemName
+      else
+        local itemFactionLevel = levelToStandingID[itemLevel]
+        if not (self._standing > itemFactionLevel) then
+          return itemName
+        end
+      end
     end
   end
   return false
@@ -275,6 +323,7 @@ function addon:AddTipInfo()
   local numNeeded, needItemPhase
   local noRep, givesRep, filledReward, unfilledReward, usedFor
   local questRep, questMoney, questExp, questItem
+  local repCapped = self._standing and standingToPhase[self._standing] > SoD_Phase
   if itemID then
     local supply = Supplies[itemID]
     local needed = addon.needCache[itemID]
@@ -282,7 +331,9 @@ function addon:AddTipInfo()
     if supply then
       repFilled, repUnfilled, moneyFilled, moneyUnfilled, itemLevel, needItemPhase = addon:SupplyDetails(itemID)
       if itemLevel then
-        if itemLevel < addon._threshold then
+        local itemRepDesc = levelToStanding[itemLevel]
+        local itemFactionLevel = levelToStandingID[itemLevel]
+        if self._standing > itemFactionLevel then -- too low for player standing, or gain capped
           noRep = RED_FONT_COLOR:WrapTextInColorCode(L["Too low for "]..addon._factionName)
         else
           givesRep = GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName..": ")
@@ -298,17 +349,21 @@ function addon:AddTipInfo()
         elseif noRep then
           tooltip:AddLine(noRep)
         end
+        tooltip:AddDoubleLine(itemRepDesc,repCapped and HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Gain Maxed"],SoD_Phase)) or " ")
       end
       return
     end
     if filled then
       questRep, questMoney, questExp, itemLevel, questItem = addon:FilledDetails(itemID)
       if itemLevel then
-        if itemLevel < addon._threshold then
-          tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),RED_FONT_COLOR:WrapTextInColorCode(L[" No Rep, "])..format(L["XP: %d, "],questExp)..GetMoneyString(questMoney))
+        local itemRepDesc = levelToStanding[itemLevel]
+        local itemFactionLevel = levelToStandingID[itemLevel]
+        if self._standing > itemFactionLevel then
+          tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),RED_FONT_COLOR:WrapTextInColorCode(L[" No Rep, "])..format(L["+%d XP, "],questExp)..GetMoneyString(questMoney))
         else
-          tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),format(L["+%d Rep, "],questRep)..format(L["XP: %d, "],questExp)..GetMoneyString(questMoney))
+          tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),format(L["+%d Rep, "],questRep)..format(L["+%d XP, "],questExp)..GetMoneyString(questMoney))
         end
+        tooltip:AddDoubleLine(itemRepDesc,repCapped and HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Gain Maxed"],SoD_Phase)) or " ")
       end
       return
     end
@@ -333,7 +388,6 @@ function addon:SetupFaction()
   end
   if not (self._factionName and self._standing) then
     self._factionName, _, self._standing = GetFactionInfoByID(self._supplyFaction)
-    self._threshold = (self._standing < FACTION_FRIENDLY) and 10 or (self._standing < FACTION_HONORED) and 25 or (self._standing < FACTION_REVERED) and 40 or (self._standing < FACTION_EXALTED) and 50 or 60
   end
   if not self._repMultiplier then
     local race, raceEN, racedID = UnitRace("player")
@@ -341,6 +395,7 @@ function addon:SetupFaction()
   end
   self._playerLevel = UnitLevel("player")
   self._playerMaxLevel = GetEffectivePlayerMaxLevel()
+  SoD_Phase = isSoD and sod_phases[(GetEffectivePlayerMaxLevel())] -- update, seems to return 60 on a cold login
   self:CacheItems()
 end
 
@@ -394,7 +449,6 @@ function addon:UPDATE_FACTION()
   local _
   if self._supplyFaction then
     _,_, self._standing = GetFactionInfoByID(self._supplyFaction)
-    self._threshold = (self._standing < FACTION_FRIENDLY) and 10 or (self._standing < FACTION_HONORED) and 25 or (self._standing < FACTION_REVERED) and 40 or (self._standing < FACTION_EXALTED) and 50 or 60
   end
 end
 
