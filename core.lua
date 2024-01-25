@@ -145,8 +145,9 @@ function addon:Print(msg)
 end
 
 function addon:Alert(mapID)
+  if not mapID and SoD_Phase then return end
   if not self.db.alert then return end
-  local repCapped = self._standing and standingToPhase[self._standing] > SoD_Phase
+  local repCapped = self._standing and standingToPhase[self._standing] and (standingToPhase[self._standing] > SoD_Phase)
   -- if repCapped then return end
   local alertOption = self.db.alert
   local tomtomOption = self.db.tomtom
@@ -319,65 +320,65 @@ function addon:AddTipInfo()
   local itemName, itemLink = tooltip:GetItem()
   local itemID = itemLink and itemLink:match("item:(%d+):")
   itemID = tonumber(itemID)
+  if not itemID and SoD_Phase then return end
   local repFilled, repUnfilled, moneyFilled, moneyUnfilled, itemLevel, supplyName, supplyLevel
   local numNeeded, needItemPhase
   local noRep, givesRep, filledReward, unfilledReward, usedFor
   local questRep, questMoney, questExp, questItem
-  local repCapped = self._standing and standingToPhase[self._standing] > SoD_Phase
-  if itemID then
-    local supply = Supplies[itemID]
-    local needed = addon.needCache[itemID]
-    local filled = Filled[itemID]
-    if supply then
-      repFilled, repUnfilled, moneyFilled, moneyUnfilled, itemLevel, needItemPhase = addon:SupplyDetails(itemID)
-      if itemLevel then
-        local itemRepDesc = levelToStanding[itemLevel]
-        local itemFactionLevel = levelToStandingID[itemLevel]
-        if self._standing > itemFactionLevel then -- too low for player standing, or gain capped
-          noRep = RED_FONT_COLOR:WrapTextInColorCode(L["Too low for "]..addon._factionName)
+  local repCapped = self._standing and standingToPhase[self._standing] and (standingToPhase[self._standing] > SoD_Phase)
+  local supply = Supplies[itemID]
+  local needed = addon.needCache[itemID]
+  local filled = Filled[itemID]
+  if supply then
+    repFilled, repUnfilled, moneyFilled, moneyUnfilled, itemLevel, needItemPhase = addon:SupplyDetails(itemID)
+    if itemLevel then
+      local itemRepDesc = levelToStanding[itemLevel]
+      local itemFactionLevel = levelToStandingID[itemLevel]
+      if self._standing > itemFactionLevel then -- too low for player standing, or gain capped
+        noRep = RED_FONT_COLOR:WrapTextInColorCode(L["Too low for "]..addon._factionName)
+      else
+        givesRep = GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName..": ")
+        if needItemPhase and SoD_Phase < needItemPhase then
+          filledReward = RED_FONT_COLOR:WrapTextInColorCode(L["Filled: +"]..repFilled..L[" Rep, "]..GetMoneyString(moneyFilled)..format(L[" (P%d)"],needItemPhase))
         else
-          givesRep = GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName..": ")
-          if needItemPhase and SoD_Phase < needItemPhase then
-            filledReward = RED_FONT_COLOR:WrapTextInColorCode(L["Filled: +"]..repFilled..L[" Rep, "]..GetMoneyString(moneyFilled)..format(L[" (P%d)"],needItemPhase))
-          else
-            filledReward = L["Filled: +"]..repFilled..L[" Rep, "]..GetMoneyString(moneyFilled)
-          end
-          unfilledReward = L["Unfilled: +"]..repUnfilled..L[" Rep, "]..GetMoneyString(moneyUnfilled)
+          filledReward = L["Filled: +"]..repFilled..L[" Rep, "]..GetMoneyString(moneyFilled)
         end
-        if givesRep then
-          tooltip:AddDoubleLine(givesRep..filledReward,unfilledReward)
-        elseif noRep then
-          tooltip:AddLine(noRep)
-        end
-        tooltip:AddDoubleLine(itemRepDesc,repCapped and HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Gain Maxed"],SoD_Phase)) or " ")
+        unfilledReward = L["Unfilled: +"]..repUnfilled..L[" Rep, "]..GetMoneyString(moneyUnfilled)
       end
-      return
+      if givesRep then
+        tooltip:AddDoubleLine(givesRep..filledReward,unfilledReward)
+      elseif noRep then
+        tooltip:AddLine(noRep)
+      end
+      tooltip:AddDoubleLine(itemRepDesc,repCapped and HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Gain Maxed"],SoD_Phase)) or " ")
     end
-    if filled then
-      questRep, questMoney, questExp, itemLevel, questItem = addon:FilledDetails(itemID)
-      if itemLevel then
-        local itemRepDesc = levelToStanding[itemLevel]
-        local itemFactionLevel = levelToStandingID[itemLevel]
-        if self._standing > itemFactionLevel then
-          tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),RED_FONT_COLOR:WrapTextInColorCode(L[" No Rep, "])..format(L["+%d XP, "],questExp)..GetMoneyString(questMoney))
-        else
-          tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),format(L["+%d Rep, "],questRep)..format(L["+%d XP, "],questExp)..GetMoneyString(questMoney))
-        end
-        tooltip:AddDoubleLine(itemRepDesc,repCapped and HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Gain Maxed"],SoD_Phase)) or " ")
-      end
-      return
-    end
-    if needed then
-      supplyName, supplyLevel, numNeeded = addon.supplyCache[needed][1], addon.supplyCache[needed][2], addon.supplyCache[needed][3]
-      if supplyName then
-        usedFor = YELLOW_FONT_COLOR:WrapTextInColorCode(format(L["Lvl %d %s (x%d)"],supplyLevel,supplyName,numNeeded))
-      end
-      if usedFor then
-        tooltip:AddDoubleLine(addon._factionName,usedFor)
-      end
-      return
-    end
+    return
   end
+  if filled then
+    questRep, questMoney, questExp, itemLevel, questItem = addon:FilledDetails(itemID)
+    if itemLevel then
+      local itemRepDesc = levelToStanding[itemLevel]
+      local itemFactionLevel = levelToStandingID[itemLevel]
+      if self._standing > itemFactionLevel then
+        tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),RED_FONT_COLOR:WrapTextInColorCode(L[" No Rep, "])..format(L["+%d XP, "],questExp)..GetMoneyString(questMoney))
+      else
+        tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),format(L["+%d Rep, "],questRep)..format(L["+%d XP, "],questExp)..GetMoneyString(questMoney))
+      end
+      tooltip:AddDoubleLine(itemRepDesc,repCapped and HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Gain Maxed"],SoD_Phase)) or " ")
+    end
+    return
+  end
+  if needed then
+    supplyName, supplyLevel, numNeeded = addon.supplyCache[needed][1], addon.supplyCache[needed][2], addon.supplyCache[needed][3]
+    if supplyName then
+      usedFor = YELLOW_FONT_COLOR:WrapTextInColorCode(format(L["Lvl %d %s (x%d)"],supplyLevel,supplyName,numNeeded))
+    end
+    if usedFor then
+      tooltip:AddDoubleLine(addon._factionName,usedFor)
+    end
+    return
+  end
+
 end
 
 function addon:SetupFaction()
@@ -395,7 +396,7 @@ function addon:SetupFaction()
   end
   self._playerLevel = UnitLevel("player")
   self._playerMaxLevel = GetEffectivePlayerMaxLevel()
-  SoD_Phase = isSoD and sod_phases[(GetEffectivePlayerMaxLevel())] -- update, seems to return 60 on a cold login
+  SoD_Phase = isSoD and sod_phases[self._playerMaxLevel] -- update, seems to return 60 on a cold login
   self:CacheItems()
 end
 
