@@ -20,13 +20,14 @@ local COLOR_STRONG_CYAN = CreateColor(0,198/255,209/255)
 addon.label = COLOR_STRONG_CYAN:WrapTextInColorCode(addonName)
 addon.short = COLOR_STRONG_CYAN:WrapTextInColorCode("WttH")
 local FACTION_NEUTRAL, FACTION_FRIENDLY, FACTION_HONORED, FACTION_REVERED, FACTION_EXALTED = 4,5,6,7,8
+local AMOUNT_NEUTRAL, AMOUNT_FRIENDLY, AMOUNT_HONORED, AMOUNT_REVERED = 3000,6000,12000,21000
 local FACTION_AZEROTH_COMMERCE, FACTION_DUROTAR_SUPPLY = 2586, 2587
 
 local sodSeasonID = Enum.SeasonID.SeasonOfDiscovery or Enum.SeasonID.Placeholder
 local sod_phases = {[25]=1, [40]=2, [50]=3, [60]=4} -- we know there's more phases after 60, will have to find another way
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 local isSoD = isClassic and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason() == sodSeasonID
-local SoD_Phase = isSoD and sod_phases[(GetEffectivePlayerMaxLevel())]
+local SoD_Phase = isSoD and sod_phases[(GetEffectivePlayerMaxLevel())] or false
 
 -- filled, unfilled, copper reward filled, copper unfilled, {numreq, itemrequired}, itemphase
 -- itemrequired might need to be an array, guessing they'll do combo fills for higher tiers
@@ -74,17 +75,59 @@ local Supplies = {
   [211834] = { 800, 200, 3000, 500, { 3, 5542} }, --"Waylaid Supplies: Pearl-clasped Cloaks"
   [211827] = { 800, 200, 3000, 500, { 1, 6339} }, --"Waylaid Supplies: Runed Silver Rods"
   [211826] = { 800, 200, 3000, 500, { 14, 15869} }, --"Waylaid Supplies: Silver Skeleton Keys"
-  -- Future phases
+  -- Phase 2 maxlevel: 40 -- incomplete data
+  [215385] = {1, 1, 1, 1, { 4,3577} }, -- waylaid-supplies-gold-bars
+  [215386] = {1, 1, 1, 1, { 6,3860} }, -- waylaid-supplies-mithril-bars
+  [215387] = {1, 1, 1, 1, { 5,4235} }, -- waylaid-supplies-heavy-hide
+  [215388] = {1, 1, 1, 1, { 10,4304} }, -- waylaid-supplies-thick-leather
+  [215389] = {1, 1, 1, 1, { 16,3818} }, -- waylaid-supplies-fadeleaf
+  [215390] = {1, 1, 1, 1, { 10,3358} }, -- waylaid-supplies-khadgars-whisker
+  [215391] = {1, 1, 1, 1, { 20,3819} }, -- waylaid-supplies-wintersbite
+  [215392] = {1, 1, 1, 1, { 8,8831} }, -- waylaid-supplies-purple-lotus
+  [215393] = {1, 1, 1, 1, { 16,1710} }, -- waylaid-supplies-greater-healing-potions
+  [215394] = {1, 1, 1, 1, { 1,4942} }, -- waylaid-supplies-lesser-stoneshield-potions
+  [215395] = {1, 1, 1, 1, { 12,8949} }, -- waylaid-supplies-elixirs-of-agility
+  [215396] = {1, 1, 1, 1, { 14,8951} }, -- waylaid-supplies-elixirs-of-greater-defense
+  [215397] = {1, 1, 1, 1, { 2,3855} }, -- waylaid-supplies-massive-iron-axes
+  [215398] = {1, 1, 1, 1, { 5,3835} }, -- waylaid-supplies-green-iron-bracers
+  [215399] = {1, 1, 1, 1, { 4,7919} }, -- waylaid-supplies-heavy-mithril-gauntlets
+  [215400] = {1, 1, 1, 1, { 10,7966} }, -- waylaid-supplies-solid-grinding-stones
+  [215401] = {1, 1, 1, 1, { 2,4391} }, -- waylaid-supplies-compact-harvest-reaper-kits
+  [215402] = {1, 1, 1, 1, { 8,4394} }, -- waylaid-supplies-big-iron-bombs
+  [215403] = {1, 1, 1, 1, { 4,10546} }, -- waylaid-supplies-deadly-scopes
+  [215404] = {1, 1, 1, 1, { 2,10508} }, -- waylaid-supplies-mithril-blunderbuss
+  [215405] = {1, 1, 1, 1, { 1,17024} }, -- waylaid-supplies-gnomish-rocket-boots
+  [215406] = {1, 1, 1, 1, { 1,10577} }, -- waylaid-supplies-goblin-mortars
+  [215407] = {1, 1, 1, 1, { 4,5964} }, -- waylaid-supplies-barbaric-shoulders
+  [215408] = {1, 1, 1, 1, { 6,5966} }, -- waylaid-supplies-guardian-gloves
+  [215409] = {1, 1, 1, 1, { 3,8198} }, -- waylaid-supplies-turtle-scale-bracers
+  [215410] = {1, 1, 1, 1, { 1,7387} }, -- waylaid-supplies-dusky-belts
+  [215411] = {1, 1, 1, 1, { 3,7377} }, -- waylaid-supplies-frost-leather-cloaks
+  [215412] = {1, 1, 1, 1, { 1,18238} }, -- waylaid-supplies-shadowskin-gloves
+  [215413] = {1, 1, 1, 1, { 1,4334} }, -- waylaid-supplies-formal-white-shirts
+  [215414] = {1, 1, 1, 1, { 4,7062} }, -- waylaid-supplies-crimson-silk-pantaloons
+  [215415] = {1, 1, 1, 1, { 5,4335} }, -- waylaid-supplies-rich-purple-silk-shirts
+  [215416] = {1, 1, 1, 1, { 4,10008} }, -- waylaid-supplies-white-bandit-masks
+  [215417] = {1, 1, 1, 1, { 10,3729} }, -- waylaid-supplies-soothing-turtle-bisque
+  [215418] = {1, 1, 1, 1, { 10,17222} }, -- waylaid-supplies-spider-sausages
+  [215419] = {1, 1, 1, 1, { 10,6451} }, -- waylaid-supplies-heavy-silk-bandages
+  [215420] = {1, 1, 1, 1, { 40,4594} }, -- waylaid-supplies-rockscale-cod
+  [215421] = {1, 1, 1, 1, { 10,6371} }, -- waylaid-supplies-fire-oil
 }
 -- questlevel, rep, money, exp
 local Filled = {
   -- Phase 1
   --[2589] = {5, 200, 400, 80}, -- debug
   [211365] = { 9, 300, 600, 105 },
+  [211368] = { 9, 300, 600, 105 },
   [211367] = { 12, 450, 1500, 120 },
   [211839] = { 18, 500, 1500, 195 },
   [211840] = { 22, 650, 2000, 240 },
   [211841] = { 25, 800, 3000, 270 },
+  -- Phase 2 : possibly incomplete
+  [217337] = { 30, 1550, 4500, 320 }, -- values will need discovery when quests are available
+  [217338] = { 35, 2300, 6000, 370 }, -- values will need discovery when quests are available
+  [217339] = { 40, 3050, 7500, 420 }, -- values will need discovery when quests are available
 }
 -- name, npcid, mapx, mapy
 local factionNPCS = {
@@ -102,6 +145,8 @@ local factionNPCS = {
 local levelToStanding = {
   [10] = _G["FACTION_STANDING_LABEL"..FACTION_NEUTRAL]..KEY_PLUS,
   [25] = _G["FACTION_STANDING_LABEL"..FACTION_FRIENDLY]..KEY_PLUS,
+  [30] = _G["FACTION_STANDING_LABEL"..FACTION_FRIENDLY]..KEY_PLUS, -- speculated, might be partial
+  [35] = _G["FACTION_STANDING_LABEL"..FACTION_FRIENDLY]..KEY_PLUS, -- speculated, might be partial
   [40] = _G["FACTION_STANDING_LABEL"..FACTION_HONORED]..KEY_PLUS,
   [50] = _G["FACTION_STANDING_LABEL"..FACTION_REVERED]..KEY_PLUS,
   [60] = _G["FACTION_STANDING_LABEL"..FACTION_EXALTED]..KEY_PLUS, -- ??
@@ -109,9 +154,20 @@ local levelToStanding = {
 local levelToStandingID = {
   [10] = FACTION_NEUTRAL,
   [25] = FACTION_FRIENDLY,
+  [30] = FACTION_FRIENDLY, -- speculated, might be partial
+  [35] = FACTION_FRIENDLY, -- speculated, might be partial
   [40] = FACTION_HONORED,
   [50] = FACTION_REVERED,
   [60] = FACTION_EXALTED,
+}
+local levelToStandingEarned = {
+  [10] = AMOUNT_NEUTRAL,
+  [25] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY,
+  [30] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY,
+  [35] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY,
+  [40] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED,
+  [50] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED+AMOUNT_REVERED,
+  [60] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED+AMOUNT_REVERED,
 }
 local standingToPhase = {
   [FACTION_FRIENDLY] = 1, -- capped at start honored
@@ -194,30 +250,61 @@ function addon:Alert(mapID)
   end
 end
 
+function addon:factionMath(earned, bracketmin, bracketmax, isID)
+  local standing, placement -- placement values: -1 lower than bracketmin, 0 between brackets, 1 higher
+  if earned > AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED+AMOUNT_REVERED then
+    standing = FACTION_EXALTED
+  elseif earned > AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED then
+    standing = FACTION_REVERED
+  elseif earned > AMOUNT_NEUTRAL+AMOUNT_FRIENDLY then
+    standing = FACTION_HONORED
+  elseif earned > AMOUNT_NEUTRAL then
+    standing = FACTION_FRIENDLY
+  elseif earned >= 0 then
+    standing = FACTION_NEUTRAL
+  end
+  if bracketmin and bracketmax then
+    if earned < bracketmin then
+      placement = -1
+    elseif earned > bracketmax then
+      placement = 1
+    elseif bracketmin <= earned and earned <= bracketmax then
+      placement = 0
+    end
+  end
+  return standing, placement
+end
+
 function addon:CacheItems()
   self.supplyCache = self.supplyCache or {}
   self.needCache = self.needCache or {}
   self.filledCache = self.filledCache or {}
   for k, v in pairs(Supplies) do
-    local neededItem = v[5]
-    local neededNum, neededItemID = unpack(neededItem,1,2)
-    self.needCache[neededItemID]=k -- item needed for filling, supply
-    local itemAsync = Item:CreateFromItemID(k)
-    itemAsync:ContinueOnItemLoad(function()
-      local itemLevel = itemAsync:GetCurrentItemLevel()
-      local itemName = itemAsync:GetItemName()
-      local itemID = itemAsync:GetItemID()
-      addon.supplyCache[itemID] = {itemName,itemLevel,neededNum}
-    end)
+    local id = GetItemInfoInstant(k)
+    if id then -- valid item for this version of the game
+      local neededItem = v[5]
+      local neededNum, neededItemID = unpack(neededItem,1,2)
+      self.needCache[neededItemID]=id -- item needed for filling, supply
+      local itemAsync = Item:CreateFromItemID(id)
+      itemAsync:ContinueOnItemLoad(function()
+        local itemLevel = itemAsync:GetCurrentItemLevel()
+        local itemName = itemAsync:GetItemName()
+        local itemID = itemAsync:GetItemID()
+        addon.supplyCache[itemID] = {itemName,itemLevel,neededNum}
+      end)
+    end
   end
   for k,v in pairs(Filled) do
-    local itemAsync = Item:CreateFromItemID(k)
-    itemAsync:ContinueOnItemLoad(function()
-      local itemLevel = itemAsync:GetCurrentItemLevel()
-      local itemName = itemAsync:GetItemName()
-      local itemID = itemAsync:GetItemID()
-      addon.filledCache[itemID] = {itemName,itemLevel}
-    end)
+    local id = GetItemInfoInstant(k)
+    if id then
+      local itemAsync = Item:CreateFromItemID(k)
+      itemAsync:ContinueOnItemLoad(function()
+        local itemLevel = itemAsync:GetCurrentItemLevel()
+        local itemName = itemAsync:GetItemName()
+        local itemID = itemAsync:GetItemID()
+        addon.filledCache[itemID] = {itemName,itemLevel}
+      end)
+    end
   end
 end
 
@@ -320,7 +407,7 @@ function addon:AddTipInfo()
   local itemName, itemLink = tooltip:GetItem()
   local itemID = itemLink and itemLink:match("item:(%d+):")
   itemID = tonumber(itemID)
-  if not itemID and SoD_Phase then return end
+  if not (itemID and SoD_Phase) then return end
   local repFilled, repUnfilled, moneyFilled, moneyUnfilled, itemLevel, supplyName, supplyLevel
   local numNeeded, needItemPhase
   local noRep, givesRep, filledReward, unfilledReward, usedFor
@@ -388,7 +475,7 @@ function addon:SetupFaction()
     self._supplyFaction = (factionEN == "Horde") and FACTION_DUROTAR_SUPPLY or FACTION_AZEROTH_COMMERCE
   end
   if not (self._factionName and self._standing) then
-    self._factionName, _, self._standing = GetFactionInfoByID(self._supplyFaction)
+    self._factionName, _, self._standing, _, _, self._earnedFaction = GetFactionInfoByID(self._supplyFaction)
   end
   if not self._repMultiplier then
     local race, raceEN, racedID = UnitRace("player")
@@ -396,8 +483,12 @@ function addon:SetupFaction()
   end
   self._playerLevel = UnitLevel("player")
   self._playerMaxLevel = GetEffectivePlayerMaxLevel()
-  SoD_Phase = isSoD and sod_phases[self._playerMaxLevel] -- update, seems to return 60 on a cold login
+  SoD_Phase = isSoD and sod_phases[self._playerMaxLevel] or false -- update, seems to return 60 on a cold login
+  if not self._standing and SoD_Phase then
+    return false
+  end
   self:CacheItems()
+  return true
 end
 
 function addon:ADDON_LOADED(...)
@@ -419,7 +510,8 @@ function addon:ADDON_LOADED(...)
 end
 
 function addon:PLAYER_LOGIN()
-  self:SetupFaction()
+  local sod_check = self:SetupFaction()
+  if not sod_check then return end
   -- install our hook
   GameTooltip:HookScript("OnTooltipSetItem", self.AddTipInfo)
   ItemRefTooltip:HookScript("OnTooltipSetItem", self.AddTipInfo)
@@ -437,7 +529,8 @@ end
 function addon:PLAYER_ENTERING_WORLD(...)
   local isLogin, isReload = ...
   if isLogin or isReload then
-    self:SetupFaction()
+    local sod_check = self:SetupFaction()
+    if not sod_check then return end
   end
   local mapID = C_Map.GetBestMapForUnit("player")
   self:Alert(mapID)
@@ -449,7 +542,7 @@ end
 function addon:UPDATE_FACTION()
   local _
   if self._supplyFaction then
-    _,_, self._standing = GetFactionInfoByID(self._supplyFaction)
+    _,_, self._standing, _,_, self._earnedFaction = GetFactionInfoByID(self._supplyFaction)
   end
 end
 
@@ -522,4 +615,4 @@ SlashCmdList[addon_upper] = function(msg)
 end
 _G["SLASH_"..addon_upper.."1"] = "/"..addon_lower
 _G["SLASH_"..addon_upper.."2"] = "/wtth"
---_G[addonName] = addon
+_G[addonName] = addon
