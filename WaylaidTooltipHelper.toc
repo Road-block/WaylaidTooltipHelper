@@ -3,7 +3,7 @@
 ## Author: Roadblock
 ## Notes: Shows rewards for Waylaid Supply boxes and on Items used to fill them.
 ## IconTexture: Interface\ICONS\INV_Crate_03
-## Version: 1.4.9
+## Version: 1.5.0
 ## SavedVariablesPerCharacter: WaylaidTooltipHelperSVPC
 ## OptionalDeps: TomTom
 

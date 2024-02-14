@@ -33,48 +33,48 @@ local SoD_Phase = isSoD and sod_phases[(GetEffectivePlayerMaxLevel())] or false
 -- itemrequired might need to be an array, guessing they'll do combo fills for higher tiers
 local Supplies = {
   -- Phase 1 maxlevel:25
-  [211331] = { 300, 100, 600, 100, { 20, 6290} }, --"Waylaid Supplies: Brilliant Smallfish"
-  [210771] = { 300, 100, 600, 100, { 20, 2840} }, --"Waylaid Supplies: Copper Bars"
-  [211315] = { 300, 100, 600, 100, { 14, 2318} }, --"Waylaid Supplies: Light Leather"
-  [211316] = { 300, 100, 600, 100, { 20, 2447} }, --"Waylaid Supplies: Peacebloom"
-  [211933] = { 300, 100, 600, 100, { 10, 2835} }, --"Waylaid Supplies: Rough Stone"
-  [211317] = { 300, 100, 600, 100, { 20, 765} }, --"Waylaid Supplies: Silverleaf"
-  [211332] = { 300, 100, 1500, 100, { 10, 2581} }, --"Waylaid Supplies: Heavy Linen Bandages"
-  [211329] = { 300, 100, 1500, 100, { 20, 6888} }, --"Waylaid Supplies: Herb Baked Eggs"
-  [211330] = { 300, 100, 1500, 100, { 20, 2680} }, --"Waylaid Supplies: Spiced Wolf Meat"
-  [211320] = { 450, 100, 1500, 100, { 3, 3473} }, --"Waylaid Supplies: Runed Copper Pants"
-  [211327] = { 450, 100, 1500, 100, { 6, 4343} }, --"Waylaid Supplies: Brown Linen Pants"
-  [211328] = { 450, 100, 1500, 100, { 4, 6238} }, --"Waylaid Supplies: Brown Linen Robes"
-  [211319] = { 450, 100, 1500, 100, { 6, 2847} }, --"Waylaid Supplies: Copper Shortswords"
-  [211326] = { 450, 100, 1500, 100, { 3, 2300} }, --"Waylaid Supplies: Embossed Leather Vests"
-  [211325] = { 450, 100, 1500, 100, { 5, 4237} }, --"Waylaid Supplies: Handstitched Leather Belts"
-  [211934] = { 450, 100, 1500, 100, { 10, 929} }, --"Waylaid Supplies: Healing Potions"
-  [211321] = { 450, 100, 1500, 100, { 2, 11287} }, --"Waylaid Supplies: Lesser Magic Wands"
-  [211318] = { 450, 100, 1500, 100, { 20, 118} }, --"Waylaid Supplies: Minor Healing Potions"
-  [211322] = { 450, 100, 1500, 100, { 2, 20744}, 5 }, --"Waylaid Supplies: Minor Wizard Oil"
-  [211324] = { 450, 100, 1500, 100, { 3, 4362} }, --"Waylaid Supplies: Rough Boomsticks"
-  [211323] = { 450, 100, 1500, 100, { 12, 4360} }, --"Waylaid Supplies: Rough Copper Bombs"
-  [211819] = { 500, 200, 2000, 500, { 12, 2841} }, --"Waylaid Supplies: Bronze Bars"
-  [211822] = { 500, 200, 2000, 500, { 20, 2453} }, --"Waylaid Supplies: Bruiseweed"
-  [211837] = { 500, 200, 2000, 500, { 8, 5527} }, --"Waylaid Supplies: Goblin Deviled Clams"
-  [211838] = { 500, 200, 2000, 500, { 15, 3531} }, --"Waylaid Supplies: Heavy Wool Bandages"
-  [211821] = { 500, 200, 2000, 500, { 12, 2319} }, --"Waylaid Supplies: Medium Leather"
-  [211820] = { 500, 200, 2000, 500, { 6, 2842} }, --"Waylaid Supplies: Silver Bars"
-  [211836] = { 500, 200, 2000, 500, { 20, 8607} }, --"Waylaid Supplies: Smoked Bear Meat"
-  [211835] = { 500, 200, 2000, 500, { 15, 21072} }, --"Waylaid Supplies: Smoked Sagefish"
-  [211823] = { 500, 200, 2000, 500, { 20, 2452} }, --"Waylaid Supplies: Swiftthistle"
-  [211831] = { 650, 200, 2000, 500, { 2, 2316} }, --"Waylaid Supplies: Dark Leather Cloaks"
-  [211833] = { 650, 200, 2000, 500, { 4, 2587} }, --"Waylaid Supplies: Gray Woolen Shirts"
-  [211824] = { 650, 200, 2000, 500, { 20, 3385} }, --"Waylaid Supplies: Lesser Mana Potions"
-  [211828] = { 650, 200, 2000, 500, { 2, 20745}, 5 }, --"Waylaid Supplies: Minor Mana Oil"
-  [211825] = { 650, 200, 2000, 500, { 3, 6350} }, --"Waylaid Supplies: Rough Bronze Boots"
-  [211829] = { 650, 200, 2000, 500, { 12, 4374} }, --"Waylaid Supplies: Small Bronze Bombs"
-  [211935] = { 800, 200, 3000, 500, { 15, 6373} }, --"Waylaid Supplies: Elixir of Firepower"
-  [211832] = { 800, 200, 3000, 500, { 2, 4251} }, --"Waylaid Supplies: Hillman's Shoulders"
-  [211830] = { 800, 200, 3000, 500, { 2, 5507} }, --"Waylaid Supplies: Ornate Spyglasses"
-  [211834] = { 800, 200, 3000, 500, { 3, 5542} }, --"Waylaid Supplies: Pearl-clasped Cloaks"
-  [211827] = { 800, 200, 3000, 500, { 1, 6339} }, --"Waylaid Supplies: Runed Silver Rods"
-  [211826] = { 800, 200, 3000, 500, { 14, 15869} }, --"Waylaid Supplies: Silver Skeleton Keys"
+  [211331] = { 300, 0, 600, 100, { 20, 6290} }, --"Waylaid Supplies: Brilliant Smallfish"
+  [210771] = { 300, 0, 600, 100, { 20, 2840} }, --"Waylaid Supplies: Copper Bars"
+  [211315] = { 300, 0, 600, 100, { 14, 2318} }, --"Waylaid Supplies: Light Leather"
+  [211316] = { 300, 0, 600, 100, { 20, 2447} }, --"Waylaid Supplies: Peacebloom"
+  [211933] = { 300, 0, 600, 100, { 10, 2835} }, --"Waylaid Supplies: Rough Stone"
+  [211317] = { 300, 0, 600, 100, { 20, 765} }, --"Waylaid Supplies: Silverleaf"
+  [211332] = { 300, 0, 1500, 100, { 10, 2581} }, --"Waylaid Supplies: Heavy Linen Bandages"
+  [211329] = { 300, 0, 1500, 100, { 20, 6888} }, --"Waylaid Supplies: Herb Baked Eggs"
+  [211330] = { 300, 0, 1500, 100, { 20, 2680} }, --"Waylaid Supplies: Spiced Wolf Meat"
+  [211320] = { 450, 0, 1500, 100, { 3, 3473} }, --"Waylaid Supplies: Runed Copper Pants"
+  [211327] = { 450, 0, 1500, 100, { 6, 4343} }, --"Waylaid Supplies: Brown Linen Pants"
+  [211328] = { 450, 0, 1500, 100, { 4, 6238} }, --"Waylaid Supplies: Brown Linen Robes"
+  [211319] = { 450, 0, 1500, 100, { 6, 2847} }, --"Waylaid Supplies: Copper Shortswords"
+  [211326] = { 450, 0, 1500, 100, { 3, 2300} }, --"Waylaid Supplies: Embossed Leather Vests"
+  [211325] = { 450, 0, 1500, 100, { 5, 4237} }, --"Waylaid Supplies: Handstitched Leather Belts"
+  [211934] = { 450, 0, 1500, 100, { 10, 929} }, --"Waylaid Supplies: Healing Potions"
+  [211321] = { 450, 0, 1500, 100, { 2, 11287} }, --"Waylaid Supplies: Lesser Magic Wands"
+  [211318] = { 450, 0, 1500, 100, { 20, 118} }, --"Waylaid Supplies: Minor Healing Potions"
+  [211322] = { 450, 0, 1500, 100, { 2, 20744}, 5 }, --"Waylaid Supplies: Minor Wizard Oil"
+  [211324] = { 450, 0, 1500, 100, { 3, 4362} }, --"Waylaid Supplies: Rough Boomsticks"
+  [211323] = { 450, 0, 1500, 100, { 12, 4360} }, --"Waylaid Supplies: Rough Copper Bombs"
+  [211819] = { 500, 0, 2000, 500, { 12, 2841} }, --"Waylaid Supplies: Bronze Bars"
+  [211822] = { 500, 0, 2000, 500, { 20, 2453} }, --"Waylaid Supplies: Bruiseweed"
+  [211837] = { 500, 0, 2000, 500, { 8, 5527} }, --"Waylaid Supplies: Goblin Deviled Clams"
+  [211838] = { 500, 0, 2000, 500, { 15, 3531} }, --"Waylaid Supplies: Heavy Wool Bandages"
+  [211821] = { 500, 0, 2000, 500, { 12, 2319} }, --"Waylaid Supplies: Medium Leather"
+  [211820] = { 500, 0, 2000, 500, { 6, 2842} }, --"Waylaid Supplies: Silver Bars"
+  [211836] = { 500, 0, 2000, 500, { 20, 8607} }, --"Waylaid Supplies: Smoked Bear Meat"
+  [211835] = { 500, 0, 2000, 500, { 15, 21072} }, --"Waylaid Supplies: Smoked Sagefish"
+  [211823] = { 500, 0, 2000, 500, { 20, 2452} }, --"Waylaid Supplies: Swiftthistle"
+  [211831] = { 650, 0, 2000, 500, { 2, 2316} }, --"Waylaid Supplies: Dark Leather Cloaks"
+  [211833] = { 650, 0, 2000, 500, { 4, 2587} }, --"Waylaid Supplies: Gray Woolen Shirts"
+  [211824] = { 650, 0, 2000, 500, { 20, 3385} }, --"Waylaid Supplies: Lesser Mana Potions"
+  [211828] = { 650, 0, 2000, 500, { 2, 20745}, 5 }, --"Waylaid Supplies: Minor Mana Oil"
+  [211825] = { 650, 0, 2000, 500, { 3, 6350} }, --"Waylaid Supplies: Rough Bronze Boots"
+  [211829] = { 650, 0, 2000, 500, { 12, 4374} }, --"Waylaid Supplies: Small Bronze Bombs"
+  [211935] = { 800, 0, 3000, 500, { 15, 6373} }, --"Waylaid Supplies: Elixir of Firepower"
+  [211832] = { 800, 0, 3000, 500, { 2, 4251} }, --"Waylaid Supplies: Hillman's Shoulders"
+  [211830] = { 800, 0, 3000, 500, { 2, 5507} }, --"Waylaid Supplies: Ornate Spyglasses"
+  [211834] = { 800, 0, 3000, 500, { 3, 5542} }, --"Waylaid Supplies: Pearl-clasped Cloaks"
+  [211827] = { 800, 0, 3000, 500, { 1, 6339} }, --"Waylaid Supplies: Runed Silver Rods"
+  [211826] = { 800, 0, 3000, 500, { 14, 15869} }, --"Waylaid Supplies: Silver Skeleton Keys"
   -- Phase 2 maxlevel: 40 -- incomplete data
   -- 30
   [215386] = {700, 0, 5000, 2000, { 6,3860} }, -- waylaid-supplies-mithril-bars
@@ -223,24 +223,24 @@ function addon:Alert(mapID)
         if not self._lastAlert or (now-self._lastAlert) > 30 then
           self._lastAlert = now
           if repCapped then
-            addon:Print(format(L["You carry %s turn-ins but your P%d rep gain is maxed."],self._factionName, SoD_Phase))
+            addon:Print(format(L["You carry %s items but your P%d rep is maxed."],self._factionName, SoD_Phase))
           else
             PlaySound(SOUNDKIT.UI_STORE_UNWRAP)
             if emptySupply and (alertOption==true or alertOption=="empty") then
-              RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],emptySupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
-              addon:Print(format(L["You can turn-in %s to %s"],emptySupply,supplyOfficer))
+              RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You have %s"],emptySupply),ChatTypeInfo["RAID_WARNING"], 10)
+              addon:Print(format(L["You have %s"],emptySupply))
             end
             if filledSupply and (alertOption==true or alertOption=="filled") then
               RaidNotice_AddMessage(RaidBossEmoteFrame, format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer),ChatTypeInfo["RAID_WARNING"], 10)
               addon:Print(format(L["You can turn-in %s to %s"],filledSupply,supplyOfficer))
-            end
-            if self.AddWaypoint then
-              if self._alertWaypoint then
-                self.RemoveWaypoint(TomTom,self._alertWaypoint) -- cleanup old waypoint
-              end
-              if tomtomOption then
-                tomtomOpt.title = supplyOfficer
-                self._alertWaypoint = self.AddWaypoint(TomTom,mapID,map_x/100,map_y/100,tomtomOpt)
+              if self.AddWaypoint then
+                if self._alertWaypoint then
+                  self.RemoveWaypoint(TomTom,self._alertWaypoint) -- cleanup old waypoint
+                end
+                if tomtomOption then
+                  tomtomOpt.title = supplyOfficer
+                  self._alertWaypoint = self.AddWaypoint(TomTom,mapID,map_x/100,map_y/100,tomtomOpt)
+                end
               end
             end
           end
@@ -434,12 +434,16 @@ function addon:AddTipInfo()
         else
           filledReward = L["Filled: +"]..repFilled..L[" Rep, "]..GetMoneyString(moneyFilled)
         end
-        unfilledReward = L["Unfilled: +"]..repUnfilled..L[" Rep, "]..GetMoneyString(moneyUnfilled)
+        if repUnfilled > 0 or moneyUnfilled > 0 then
+          unfilledReward = L["Unfilled: +"]..(repUnfilled>0 and repUnfilled or "")..(moneyUnfilled>0 and GetMoneyString(moneyUnfilled) or "")
+        else
+          unfilledReward = ""
+        end
       end
       if givesRep then
         tooltip:AddDoubleLine(givesRep,itemRepDesc)
         if repCapped then
-          tooltip:AddLine(HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Gain Maxed"],SoD_Phase)))
+          tooltip:AddLine(HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Maxed"],SoD_Phase)))
         else
           tooltip:AddDoubleLine(filledReward,unfilledReward)
         end
@@ -459,7 +463,7 @@ function addon:AddTipInfo()
       else
         tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),itemRepDesc)
         if repCapped then
-          tooltip:AddLine(HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Gain Maxed"],SoD_Phase)))
+          tooltip:AddLine(HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(L["P%d Rep Maxed"],SoD_Phase)))
         else
           tooltip:AddLine(format(L["+%d Rep, "],questRep)..format(L["+%d XP, "],questExp)..GetMoneyString(questMoney))
         end
