@@ -22,9 +22,9 @@ addon.short = COLOR_STRONG_CYAN:WrapTextInColorCode("WttH")
 local FACTION_NEUTRAL, FACTION_FRIENDLY, FACTION_HONORED, FACTION_REVERED, FACTION_EXALTED = 4,5,6,7,8
 local AMOUNT_NEUTRAL, AMOUNT_FRIENDLY, AMOUNT_HONORED, AMOUNT_REVERED = 3000,6000,12000,21000
 local FACTION_AZEROTH_COMMERCE, FACTION_DUROTAR_SUPPLY = 2586, 2587
-
+local P1_LEVEL_CAP, P2_LEVEL_CAP, P3_LEVEL_CAP, P4_LEVEL_CAP = 25,40,50,60
 local sodSeasonID = Enum.SeasonID.SeasonOfDiscovery or Enum.SeasonID.Placeholder
-local sod_phases = {[25]=1, [40]=2, [50]=3, [60]=4} -- we know there's more phases after 60, will have to find another way
+local sod_phases = {[P1_LEVEL_CAP]=1, [P2_LEVEL_CAP]=2, [P3_LEVEL_CAP]=3, [P4_LEVEL_CAP]=4} -- we know there's more phases after 60, will have to find another way
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 local isSoD = isClassic and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason() == sodSeasonID
 local SoD_Phase = isSoD and sod_phases[(GetEffectivePlayerMaxLevel())] or false
@@ -129,9 +129,9 @@ local Filled = {
   [211840] = { 22, 650, 2000, 240 },
   [211841] = { 25, 800, 3000, 270 },
   -- Phase 2 : possibly incomplete
-  [217337] = { 28, 700, 5000, 300 }, -- values will need discovery when quests are available
-  [217338] = { 35, 850, 15000, 370 }, -- values will need discovery when quests are available
-  [217339] = { 40, 1000, 25000, 420 }, -- values will need discovery when quests are available
+  [217337] = { 28, 700, 5000, 850 }, -- values will need discovery when quests are available
+  [217338] = { 35, 850, 15000, 1550 }, -- values will need discovery when quests are available
+  [217339] = { 40, 1000, 25000, 3000 }, -- values will need discovery when quests are available
 }
 -- name, npcid, mapx, mapy
 local factionNPCS = {
@@ -149,8 +149,8 @@ local factionNPCS = {
 local levelToStanding = {
   [10] = _G["FACTION_STANDING_LABEL"..FACTION_NEUTRAL]..KEY_PLUS,
   [25] = _G["FACTION_STANDING_LABEL"..FACTION_FRIENDLY]..KEY_PLUS,
-  [30] = _G["FACTION_STANDING_LABEL"..FACTION_FRIENDLY]..KEY_PLUS, -- speculated, might be partial
-  [35] = _G["FACTION_STANDING_LABEL"..FACTION_FRIENDLY]..KEY_PLUS, -- speculated, might be partial
+  [30] = _G["FACTION_STANDING_LABEL"..FACTION_HONORED]..KEY_PLUS, -- speculated, might be partial
+  [35] = _G["FACTION_STANDING_LABEL"..FACTION_HONORED]..KEY_PLUS, -- speculated, might be partial
   [40] = _G["FACTION_STANDING_LABEL"..FACTION_HONORED]..KEY_PLUS,
   [50] = _G["FACTION_STANDING_LABEL"..FACTION_REVERED]..KEY_PLUS,
   [60] = _G["FACTION_STANDING_LABEL"..FACTION_EXALTED]..KEY_PLUS, -- ??
@@ -158,8 +158,8 @@ local levelToStanding = {
 local levelToStandingID = {
   [10] = FACTION_NEUTRAL,
   [25] = FACTION_FRIENDLY,
-  [30] = FACTION_FRIENDLY, -- speculated, might be partial
-  [35] = FACTION_FRIENDLY, -- speculated, might be partial
+  [30] = FACTION_HONORED, -- speculated, might be partial
+  [35] = FACTION_HONORED, -- speculated, might be partial
   [40] = FACTION_HONORED,
   [50] = FACTION_REVERED,
   [60] = FACTION_EXALTED,
@@ -167,8 +167,8 @@ local levelToStandingID = {
 local levelToStandingEarned = {
   [10] = AMOUNT_NEUTRAL,
   [25] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY,
-  [30] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY,
-  [35] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY,
+  [30] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED,
+  [35] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED,
   [40] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED,
   [50] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED+AMOUNT_REVERED,
   [60] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED+AMOUNT_REVERED,
@@ -351,6 +351,15 @@ end
 function addon:CalculateRewards(questlevel, xp)
   local greenlevel = self._playerLevel - GetQuestGreenRange()
   local atlevelcap = self._playerLevel == self._playerMaxLevel
+  local hoardprotection
+  if self._playerLevel >= P1_LEVEL_CAP and questlevel <= P1_LEVEL_CAP then
+    hoardprotection = true
+  elseif self._playerLevel >= P2_LEVEL_CAP and questlevel <= P2_LEVEL_CAP then
+    hoardprotection = true
+  elseif self._playerLevel >= P3_LEVEL_CAP and questlevel <= P3_LEVEL_CAP then
+    hoardprotection = true
+  end
+  if hoardprotection then xp = 0 end
   local extraMoney, realXP = 0, xp
   if questlevel >= greenlevel then -- green or higher quest
     if atlevelcap then
