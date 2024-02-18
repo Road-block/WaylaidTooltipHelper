@@ -60,7 +60,7 @@ local Supplies = {
   [211838] = { 500, 0, 2000, 500, { 15, 3531} }, --"Waylaid Supplies: Heavy Wool Bandages"
   [211821] = { 500, 0, 2000, 500, { 12, 2319} }, --"Waylaid Supplies: Medium Leather"
   [211820] = { 500, 0, 2000, 500, { 6, 2842} }, --"Waylaid Supplies: Silver Bars"
-  [211836] = { 500, 0, 2000, 500, { 20, 8607} }, --"Waylaid Supplies: Smoked Bear Meat"
+  [211836] = { 500, 0, 2000, 500, { 20, 6890} }, --"Waylaid Supplies: Smoked Bear Meat"
   [211835] = { 500, 0, 2000, 500, { 15, 21072} }, --"Waylaid Supplies: Smoked Sagefish"
   [211823] = { 500, 0, 2000, 500, { 20, 2452} }, --"Waylaid Supplies: Swiftthistle"
   [211831] = { 650, 0, 2000, 500, { 2, 2316} }, --"Waylaid Supplies: Dark Leather Cloaks"
@@ -351,7 +351,7 @@ end
 function addon:CalculateRewards(questlevel, xp)
   local greenlevel = self._playerLevel - GetQuestGreenRange()
   local atlevelcap = self._playerLevel == self._playerMaxLevel
-  local hoardprotection
+  --[[local hoardprotection
   if self._playerLevel >= P1_LEVEL_CAP and questlevel <= P1_LEVEL_CAP then
     hoardprotection = true
   elseif self._playerLevel >= P2_LEVEL_CAP and questlevel <= P2_LEVEL_CAP then
@@ -359,7 +359,7 @@ function addon:CalculateRewards(questlevel, xp)
   elseif self._playerLevel >= P3_LEVEL_CAP and questlevel <= P3_LEVEL_CAP then
     hoardprotection = true
   end
-  if hoardprotection then xp = 0 end
+  if hoardprotection then xp = 0 end]]
   local extraMoney, realXP = 0, xp
   if questlevel >= greenlevel then -- green or higher quest
     if atlevelcap then
