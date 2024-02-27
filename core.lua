@@ -77,46 +77,46 @@ local Supplies = {
   [211826] = { 800, 0, 3000, 500, { 14, 15869} }, --"Waylaid Supplies: Silver Skeleton Keys"
   -- Phase 2 maxlevel: 40 -- incomplete data
   -- 30
-  [215386] = {700, 0, 5000, 2000, { 6,3860} }, -- waylaid-supplies-mithril-bars
-  [215387] = {700, 0, 5000, 2000, { 5,4235} }, -- waylaid-supplies-heavy-hide
-  [215388] = {700, 0, 5000, 2000, { 10,4304} }, -- waylaid-supplies-thick-leather
-  [215389] = {700, 0, 5000, 2000, { 16,3818} }, -- waylaid-supplies-fadeleaf
-  [215390] = {700, 0, 5000, 2000, { 10,3358} }, -- waylaid-supplies-khadgars-whisker
-  [215391] = {700, 0, 5000, 2000, { 20,3819} }, -- waylaid-supplies-wintersbite
-  [215392] = {700, 0, 5000, 2000, { 8,8831} }, -- waylaid-supplies-purple-lotus
-  [215400] = {700, 0, 5000, 2000, { 10,7966} }, -- waylaid-supplies-solid-grinding-stones
-  [215413] = {700, 0, 5000, 2000, { 3,4334} }, -- waylaid-supplies-formal-white-shirts
-  [215417] = {700, 0, 5000, 2000, { 10,3729} }, -- waylaid-supplies-soothing-turtle-bisque
-  [215418] = {700, 0, 5000, 2000, { 10,17222} }, -- waylaid-supplies-spider-sausages
-  [215419] = {700, 0, 5000, 2000, { 10,6451} }, -- waylaid-supplies-heavy-silk-bandages
-  [215420] = {700, 0, 5000, 2000, { 40,4594} }, -- waylaid-supplies-rockscale-cod
-  [215421] = {700, 0, 5000, 2000, { 10,6371} }, -- waylaid-supplies-fire-oil
+  [215386] = {700, 0, 20000, 2000, { 6,3860} }, -- waylaid-supplies-mithril-bars
+  [215387] = {700, 0, 20000, 2000, { 5,4235} }, -- waylaid-supplies-heavy-hide
+  [215388] = {700, 0, 20000, 2000, { 10,4304} }, -- waylaid-supplies-thick-leather
+  [215389] = {700, 0, 20000, 2000, { 16,3818} }, -- waylaid-supplies-fadeleaf
+  [215390] = {700, 0, 20000, 2000, { 10,3358} }, -- waylaid-supplies-khadgars-whisker
+  [215391] = {700, 0, 20000, 2000, { 20,3819} }, -- waylaid-supplies-wintersbite
+  [215392] = {700, 0, 20000, 2000, { 8,8831} }, -- waylaid-supplies-purple-lotus
+  [215400] = {700, 0, 20000, 2000, { 10,7966} }, -- waylaid-supplies-solid-grinding-stones
+  [215413] = {700, 0, 20000, 2000, { 3,4334} }, -- waylaid-supplies-formal-white-shirts
+  [215417] = {700, 0, 20000, 2000, { 10,3729} }, -- waylaid-supplies-soothing-turtle-bisque
+  [215418] = {700, 0, 20000, 2000, { 10,17222} }, -- waylaid-supplies-spider-sausages
+  [215419] = {700, 0, 20000, 2000, { 10,6451} }, -- waylaid-supplies-heavy-silk-bandages
+  [215420] = {700, 0, 20000, 2000, { 40,4594} }, -- waylaid-supplies-rockscale-cod
+  [215421] = {700, 0, 20000, 2000, { 10,6371} }, -- waylaid-supplies-fire-oil
   -- 35
-  [215385] = {850, 0, 15000, 2000, { 4,3577} }, -- waylaid-supplies-gold-bars
-  [215393] = {850, 0, 15000, 2000, { 16,1710} }, -- waylaid-supplies-greater-healing-potions
-  [215395] = {850, 0, 15000, 2000, { 12,8949} }, -- waylaid-supplies-elixirs-of-agility
-  [215398] = {850, 0, 15000, 2000, { 5,3835} }, -- waylaid-supplies-green-iron-bracers
-  [215399] = {850, 0, 15000, 2000, { 4,7919} }, -- waylaid-supplies-heavy-mithril-gauntlets
-  [215401] = {850, 0, 15000, 2000, { 2,4391} }, -- waylaid-supplies-compact-harvest-reaper-kits
-  [215402] = {850, 0, 15000, 2000, { 8,4394} }, -- waylaid-supplies-big-iron-bombs
-  [215403] = {850, 0, 15000, 2000, { 4,10546} }, -- waylaid-supplies-deadly-scopes
-  [215407] = {850, 0, 15000, 2000, { 4,5964} }, -- waylaid-supplies-barbaric-shoulders
-  [215408] = {850, 0, 15000, 2000, { 6,5966} }, -- waylaid-supplies-guardian-gloves
-  [215411] = {850, 0, 15000, 2000, { 3,7377} }, -- waylaid-supplies-frost-leather-cloaks
-  [215414] = {850, 0, 15000, 2000, { 4,7062} }, -- waylaid-supplies-crimson-silk-pantaloons
-  [215415] = {850, 0, 15000, 2000, { 5,4335} }, -- waylaid-supplies-rich-purple-silk-shirts
+  [215385] = {850, 0, 55000, 2000, { 4,3577} }, -- waylaid-supplies-gold-bars
+  [215393] = {850, 0, 55000, 2000, { 16,1710} }, -- waylaid-supplies-greater-healing-potions
+  [215395] = {850, 0, 55000, 2000, { 12,8949} }, -- waylaid-supplies-elixirs-of-agility
+  [215398] = {850, 0, 55000, 2000, { 5,3835} }, -- waylaid-supplies-green-iron-bracers
+  [215399] = {850, 0, 55000, 2000, { 4,7919} }, -- waylaid-supplies-heavy-mithril-gauntlets
+  [215401] = {850, 0, 55000, 2000, { 2,4391} }, -- waylaid-supplies-compact-harvest-reaper-kits
+  [215402] = {850, 0, 55000, 2000, { 8,4394} }, -- waylaid-supplies-big-iron-bombs
+  [215403] = {850, 0, 55000, 2000, { 4,10546} }, -- waylaid-supplies-deadly-scopes
+  [215407] = {850, 0, 55000, 2000, { 4,5964} }, -- waylaid-supplies-barbaric-shoulders
+  [215408] = {850, 0, 55000, 2000, { 6,5966} }, -- waylaid-supplies-guardian-gloves
+  [215411] = {850, 0, 55000, 2000, { 3,7377} }, -- waylaid-supplies-frost-leather-cloaks
+  [215414] = {850, 0, 55000, 2000, { 4,7062} }, -- waylaid-supplies-crimson-silk-pantaloons
+  [215415] = {850, 0, 55000, 2000, { 5,4335} }, -- waylaid-supplies-rich-purple-silk-shirts
   -- 40
-  [215394] = {1000, 0, 25000, 2000, { 20,4942} }, -- waylaid-supplies-lesser-stoneshield-potions
-  [215396] = {1000, 0, 25000, 2000, { 14,8951} }, -- waylaid-supplies-elixirs-of-greater-defense
-  [215397] = {1000, 0, 25000, 2000, { 2,3855} }, -- waylaid-supplies-massive-iron-axes
-  [215404] = {1000, 0, 25000, 2000, { 2,10508} }, -- waylaid-supplies-mithril-blunderbuss
-  [215409] = {1000, 0, 25000, 2000, { 3,8198} }, -- waylaid-supplies-turtle-scale-bracers
-  [215410] = {1000, 0, 25000, 2000, { 4,7387} }, -- waylaid-supplies-dusky-belts
-  [215416] = {1000, 0, 25000, 2000, { 4,10008} }, -- waylaid-supplies-white-bandit-masks
+  [215394] = {1000, 0, 120000, 2000, { 20,4942} }, -- waylaid-supplies-lesser-stoneshield-potions
+  [215396] = {1000, 0, 120000, 2000, { 14,8951} }, -- waylaid-supplies-elixirs-of-greater-defense
+  [215397] = {1000, 0, 120000, 2000, { 2,3855} }, -- waylaid-supplies-massive-iron-axes
+  [215404] = {1000, 0, 120000, 2000, { 2,10508} }, -- waylaid-supplies-mithril-blunderbuss
+  [215409] = {1000, 0, 120000, 2000, { 3,8198} }, -- waylaid-supplies-turtle-scale-bracers
+  [215410] = {1000, 0, 120000, 2000, { 4,7387} }, -- waylaid-supplies-dusky-belts
+  [215416] = {1000, 0, 120000, 2000, { 4,10008} }, -- waylaid-supplies-white-bandit-masks
   -- unknown
-  [215405] = {1000, 0, 25000, 2000, { 1,17024} }, -- waylaid-supplies-gnomish-rocket-boots
-  [215406] = {1000, 0, 25000, 2000, { 1,10577} }, -- waylaid-supplies-goblin-mortars
-  [215412] = {1000, 0, 25000, 2000, { 1,18238} }, -- waylaid-supplies-shadowskin-gloves
+  [215405] = {1000, 0, 120000, 2000, { 1,17024} }, -- waylaid-supplies-gnomish-rocket-boots
+  [215406] = {1000, 0, 120000, 2000, { 1,10577} }, -- waylaid-supplies-goblin-mortars
+  [215412] = {1000, 0, 120000, 2000, { 1,18238} }, -- waylaid-supplies-shadowskin-gloves
 }
 -- questlevel, rep, money, exp
 local Filled = {
@@ -129,9 +129,9 @@ local Filled = {
   [211840] = { 22, 650, 2000, 240 },
   [211841] = { 25, 800, 3000, 270 },
   -- Phase 2 : possibly incomplete
-  [217337] = { 28, 700, 5000, 850 }, -- values will need discovery when quests are available
-  [217338] = { 35, 850, 15000, 1550 }, -- values will need discovery when quests are available
-  [217339] = { 40, 1000, 25000, 3000 }, -- values will need discovery when quests are available
+  [217337] = { 28, 700, 20000, 850 }, -- values will need discovery when quests are available
+  [217338] = { 35, 850, 55000, 1550 }, -- values will need discovery when quests are available
+  [217339] = { 40, 1000, 120000, 3000 }, -- values will need discovery when quests are available
 }
 -- name, npcid, mapx, mapy
 local factionNPCS = {
@@ -411,6 +411,8 @@ function addon:FilledDetails(supplyID)
   local questLevel, questRep, questMoney, questExp = unpack(staticInfo,1,4)
   local itemName, itemLevel = dynamicInfo[1], dynamicInfo[2]
   local realExp, extraMoney = self:CalculateRewards(questLevel,questExp)
+  -- remove extraMoney addition for now these quests seem to be exempt from levellocked xp>gold
+  extraMoney = 0
   return questRep*(self._repMultiplier or 1), questMoney+extraMoney, realExp, itemLevel, itemName
 end
 
