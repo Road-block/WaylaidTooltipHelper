@@ -287,6 +287,7 @@ function addon:CacheItems()
     local id = GetItemInfoInstant(k)
     if id then -- valid item for this version of the game
       local neededItem = v[5]
+      local moneyFilled = v[3]
       local neededNum, neededItemID = unpack(neededItem,1,2)
       self.needCache[neededItemID]=id -- item needed for filling, supply
       local itemAsync = Item:CreateFromItemID(id)
@@ -294,7 +295,7 @@ function addon:CacheItems()
         local itemLevel = itemAsync:GetCurrentItemLevel()
         local itemName = itemAsync:GetItemName()
         local itemID = itemAsync:GetItemID()
-        addon.supplyCache[itemID] = {itemName,itemLevel,neededNum}
+        addon.supplyCache[itemID] = {itemName,itemLevel,neededNum,moneyFilled}
       end)
     end
   end
@@ -483,10 +484,10 @@ function addon:AddTipInfo()
     return
   end
   if needed then
-    supplyName, supplyLevel, numNeeded = addon.supplyCache[needed][1], addon.supplyCache[needed][2], addon.supplyCache[needed][3]
+    supplyName, supplyLevel, numNeeded, moneyFilled = addon.supplyCache[needed][1], addon.supplyCache[needed][2], addon.supplyCache[needed][3], addon.supplyCache[needed][4]
     if supplyName then
       local itemRepDesc = levelToStanding[supplyLevel]
-      tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),format(L["Lvl %d %s"],supplyLevel,itemRepDesc))
+      tooltip:AddDoubleLine(GREEN_FONT_COLOR:WrapTextInColorCode(addon._factionName),format(L["Lvl %d (%s) %s"],supplyLevel,GetMoneyString(moneyFilled),itemRepDesc))
       tooltip:AddLine(YELLOW_FONT_COLOR:WrapTextInColorCode(format(L["x%d per [%s]"],numNeeded,supplyName)))
     end
     return
