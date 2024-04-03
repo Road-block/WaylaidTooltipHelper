@@ -117,6 +117,33 @@ local Supplies = {
   [215405] = {1000, 0, 120000, 2000, { 1,17024} }, -- waylaid-supplies-gnomish-rocket-boots
   [215406] = {1000, 0, 120000, 2000, { 1,10577} }, -- waylaid-supplies-goblin-mortars
   [215412] = {1000, 0, 120000, 2000, { 1,18238} }, -- waylaid-supplies-shadowskin-gloves
+  -- Phase 3 maxlevel: 50
+  --45
+  [220940] = {1, 0, 1, 1, { 5, 10024} }, -- Waylaid Supplies: Black Mageweave Headbands:
+  [220923] = {1, 0, 1, 1, { 6, 13463} }, -- Waylaid Supplies: Dreamfoil:
+  [220928] = {1, 0, 1, 1, { 4, 12655} }, -- Waylaid Supplies: Enchanted Thorium Bars:
+  [220921] = {1, 0, 1, 1, { 14, 8545} }, -- Waylaid Supplies: Heavy Mageweave Bandages:
+  [220931] = {1, 0, 1, 1, { 16, 10562} }, -- Waylaid Supplies: Hi-Explosive Bombs:
+  [220930] = {1, 0, 1, 1, { 8, 13446} }, -- Waylaid Supplies: Major Healing Potions:
+  [220934] = {1, 0, 1, 1, { 3, 7931} }, -- Waylaid Supplies: Mithril Coifs:
+  [220919] = {1, 0, 1, 1, { 8, 13931} }, -- Waylaid Supplies: Nightfin Soup:
+  [220937] = {1, 0, 1, 1, { 12, 15564} }, -- Waylaid Supplies: Rugged Armor Kits:
+  [220926] = {1, 0, 1, 1, { 14, 8170} }, -- Waylaid Supplies: Rugged Leather:
+  [220941] = {1, 0, 1, 1, { 6, 13856} }, -- Waylaid Supplies: Runecloth Belts:
+  [220939] = {1, 0, 1, 1, { 5, 15092} }, -- Waylaid Supplies: Runic Leather Bracers:
+  [220922] = {1, 0, 1, 1, { 15, 8838} }, -- Waylaid Supplies: Sungrass:
+  [220929] = {1, 0, 1, 1, { 6, 13443} }, -- Waylaid Supplies: Superior Mana Potions:
+  [220920] = {1, 0, 1, 1, { 12, 18045} }, -- Waylaid Supplies: Tender Wolf Steaks:
+  [220927] = {1, 0, 1, 1, { 8, 8169} }, -- Waylaid Supplies: Thick Hide:
+  [220925] = {1, 0, 1, 1, { 16, 12359} }, -- Waylaid Supplies: Thorium Bars:
+  [220935] = {1, 0, 1, 1, { 5, 12406} }, -- Waylaid Supplies: Thorium Belts:
+  [220932] = {1, 0, 1, 1, { 3, 15993} }, -- Waylaid Supplies: Thorium Grenades:
+  [220933] = {1, 0, 1, 1, { 2, 15995} }, -- Waylaid Supplies: Thorium Rifles:
+  [220924] = {1, 0, 1, 1, { 12, 6037} }, -- Waylaid Supplies: Truesilver Bars:
+  [220936] = {1, 0, 1, 1, { 2, 7938} }, -- Waylaid Supplies: Truesilver Gauntlets:
+  [220942] = {1, 0, 1, 1, { 4, 10034} }, -- Waylaid Supplies: Tuxedo Shirts:
+  [220918] = {1, 0, 1, 1, { 16, 16766} }, -- Waylaid Supplies: Undermine Clam Chowder:
+  [220938] = {1, 0, 1, 1, { 6, 15084} }, -- Waylaid Supplies: Wicked Leather Bracers:
 }
 -- questlevel, rep, money, exp
 local Filled = {
@@ -132,6 +159,10 @@ local Filled = {
   [217337] = { 28, 700, 20000, 850 }, -- values will need discovery when quests are available
   [217338] = { 35, 850, 55000, 1550 }, -- values will need discovery when quests are available
   [217339] = { 40, 1000, 120000, 3000 }, -- values will need discovery when quests are available
+  -- Phase 3 : only have some info for lowest tier
+  [221008] = { 42, 1, 1, 1},
+  [221009] = { 47, 1, 1, 1},
+  [221010] = { 50, 1, 1, 1},
 }
 -- name, npcid, mapx, mapy
 local factionNPCS = {
@@ -152,6 +183,7 @@ local levelToStanding = {
   [30] = _G["FACTION_STANDING_LABEL"..FACTION_HONORED]..KEY_PLUS, -- speculated, might be partial
   [35] = _G["FACTION_STANDING_LABEL"..FACTION_HONORED]..KEY_PLUS, -- speculated, might be partial
   [40] = _G["FACTION_STANDING_LABEL"..FACTION_HONORED]..KEY_PLUS,
+  [45] = _G["FACTION_STANDING_LABEL"..FACTION_REVERED]..KEY_PLUS,
   [50] = _G["FACTION_STANDING_LABEL"..FACTION_REVERED]..KEY_PLUS,
   [60] = _G["FACTION_STANDING_LABEL"..FACTION_EXALTED]..KEY_PLUS, -- ??
 }
@@ -161,6 +193,7 @@ local levelToStandingID = {
   [30] = FACTION_HONORED, -- speculated, might be partial
   [35] = FACTION_HONORED, -- speculated, might be partial
   [40] = FACTION_HONORED,
+  [45] = FACTION_REVERED,
   [50] = FACTION_REVERED,
   [60] = FACTION_EXALTED,
 }
@@ -170,6 +203,7 @@ local levelToStandingEarned = {
   [30] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED,
   [35] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED,
   [40] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED,
+  [45] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED+AMOUNT_REVERED,
   [50] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED+AMOUNT_REVERED,
   [60] = AMOUNT_NEUTRAL+AMOUNT_FRIENDLY+AMOUNT_HONORED+AMOUNT_REVERED,
 }
