@@ -119,31 +119,33 @@ local Supplies = {
   [215412] = {1000, 0, 120000, 2000, { 1,18238} }, -- waylaid-supplies-shadowskin-gloves
   -- Phase 3 maxlevel: 50
   --45
-  [220940] = {1, 0, 1, 1, { 5, 10024} }, -- Waylaid Supplies: Black Mageweave Headbands:
-  [220923] = {1, 0, 1, 1, { 6, 13463} }, -- Waylaid Supplies: Dreamfoil:
-  [220928] = {1, 0, 1, 1, { 4, 12655} }, -- Waylaid Supplies: Enchanted Thorium Bars:
-  [220921] = {1, 0, 1, 1, { 14, 8545} }, -- Waylaid Supplies: Heavy Mageweave Bandages:
-  [220931] = {1, 0, 1, 1, { 16, 10562} }, -- Waylaid Supplies: Hi-Explosive Bombs:
-  [220930] = {1, 0, 1, 1, { 8, 13446} }, -- Waylaid Supplies: Major Healing Potions:
-  [220934] = {1, 0, 1, 1, { 3, 7931} }, -- Waylaid Supplies: Mithril Coifs:
-  [220919] = {1, 0, 1, 1, { 8, 13931} }, -- Waylaid Supplies: Nightfin Soup:
-  [220937] = {1, 0, 1, 1, { 12, 15564} }, -- Waylaid Supplies: Rugged Armor Kits:
-  [220926] = {1, 0, 1, 1, { 14, 8170} }, -- Waylaid Supplies: Rugged Leather:
-  [220941] = {1, 0, 1, 1, { 6, 13856} }, -- Waylaid Supplies: Runecloth Belts:
-  [220939] = {1, 0, 1, 1, { 5, 15092} }, -- Waylaid Supplies: Runic Leather Bracers:
-  [220922] = {1, 0, 1, 1, { 15, 8838} }, -- Waylaid Supplies: Sungrass:
-  [220929] = {1, 0, 1, 1, { 6, 13443} }, -- Waylaid Supplies: Superior Mana Potions:
-  [220920] = {1, 0, 1, 1, { 12, 18045} }, -- Waylaid Supplies: Tender Wolf Steaks:
-  [220927] = {1, 0, 1, 1, { 8, 8169} }, -- Waylaid Supplies: Thick Hide:
-  [220925] = {1, 0, 1, 1, { 16, 12359} }, -- Waylaid Supplies: Thorium Bars:
-  [220935] = {1, 0, 1, 1, { 5, 12406} }, -- Waylaid Supplies: Thorium Belts:
-  [220932] = {1, 0, 1, 1, { 3, 15993} }, -- Waylaid Supplies: Thorium Grenades:
-  [220933] = {1, 0, 1, 1, { 2, 15995} }, -- Waylaid Supplies: Thorium Rifles:
-  [220924] = {1, 0, 1, 1, { 12, 6037} }, -- Waylaid Supplies: Truesilver Bars:
-  [220936] = {1, 0, 1, 1, { 2, 7938} }, -- Waylaid Supplies: Truesilver Gauntlets:
-  [220942] = {1, 0, 1, 1, { 4, 10034} }, -- Waylaid Supplies: Tuxedo Shirts:
-  [220918] = {1, 0, 1, 1, { 16, 16766} }, -- Waylaid Supplies: Undermine Clam Chowder:
-  [220938] = {1, 0, 1, 1, { 6, 15084} }, -- Waylaid Supplies: Wicked Leather Bracers:
+  [220918] = {950, 0, 38500, 5000, { 16, 16766} }, -- Waylaid Supplies: Undermine Clam Chowder:
+  [220919] = {950, 0, 38500, 5000, { 8, 13931} }, -- Waylaid Supplies: Nightfin Soup:
+  [220920] = {950, 0, 38500, 5000, { 12, 18045} }, -- Waylaid Supplies: Tender Wolf Steaks:
+  [220921] = {950, 0, 38500, 5000, { 14, 8545} }, -- Waylaid Supplies: Heavy Mageweave Bandages:
+  [220922] = {950, 0, 38500, 5000, { 15, 8838} }, -- Waylaid Supplies: Sungrass:
+  [220923] = {950, 0, 38500, 5000, { 6, 13463} }, -- Waylaid Supplies: Dreamfoil:
+  [220924] = {950, 0, 38500, 5000, { 12, 6037} }, -- Waylaid Supplies: Truesilver Bars:
+  [220925] = {950, 0, 38500, 5000, { 16, 12359} }, -- Waylaid Supplies: Thorium Bars:
+  [220926] = {950, 0, 38500, 5000, { 14, 8170} }, -- Waylaid Supplies: Rugged Leather:
+  [220927] = {950, 0, 38500, 5000, { 8, 8169} }, -- Waylaid Supplies: Thick Hide:
+  --mid
+  [220928] = {1300, 0, 84500, 5000, { 4, 12655} }, -- Waylaid Supplies: Enchanted Thorium Bars:
+  [220929] = {1300, 0, 84500, 5000, { 6, 13443} }, -- Waylaid Supplies: Superior Mana Potions:
+  [220930] = {1300, 0, 84500, 5000, { 8, 13446} }, -- Waylaid Supplies: Major Healing Potions:
+  [220931] = {1300, 0, 84500, 5000, { 16, 10562} }, -- Waylaid Supplies: Hi-Explosive Bombs:
+  [220932] = {1300, 0, 84500, 5000, { 3, 15993} }, -- Waylaid Supplies: Thorium Grenades:
+  [220934] = {1300, 0, 84500, 5000, { 3, 7931} }, -- Waylaid Supplies: Mithril Coifs:
+  [220935] = {1300, 0, 84500, 5000, { 5, 12406} }, -- Waylaid Supplies: Thorium Belts:
+  [220937] = {1300, 0, 84500, 5000, { 12, 15564} }, -- Waylaid Supplies: Rugged Armor Kits:
+  [220938] = {1300, 0, 84500, 5000, { 6, 15084} }, -- Waylaid Supplies: Wicked Leather Bracers:
+  [220940] = {1300, 0, 84500, 5000, { 5, 10024} }, -- Waylaid Supplies: Black Mageweave Headbands:
+  [220942] = {1300, 0, 84500, 5000, { 4, 10034} }, -- Waylaid Supplies: Tuxedo Shirts:
+  --top (speculative)
+  [220933] = {1650, 0, 160000, 5000, { 2, 15995} }, -- Waylaid Supplies: Thorium Rifles:
+  [220936] = {1650, 0, 160000, 5000, { 2, 7938} }, -- Waylaid Supplies: Truesilver Gauntlets:
+  [220939] = {1650, 0, 160000, 5000, { 5, 15092} }, -- Waylaid Supplies: Runic Leather Bracers:
+  [220941] = {1650, 0, 160000, 5000, { 6, 13856} }, -- Waylaid Supplies: Runecloth Belts:
 }
 -- questlevel, rep, money, exp
 local Filled = {
@@ -160,9 +162,9 @@ local Filled = {
   [217338] = { 35, 850, 55000, 1550 }, -- values will need discovery when quests are available
   [217339] = { 40, 1000, 120000, 3000 }, -- values will need discovery when quests are available
   -- Phase 3 : only have some info for lowest tier
-  [221008] = { 42, 1, 1, 1},
-  [221009] = { 47, 1, 1, 1},
-  [221010] = { 50, 1, 1, 1},
+  [221008] = { 42, 950, 38500, 1},
+  [221009] = { 45, 1300, 84500, 1},
+  [221010] = { 50, 1650, 160000, 1}, -- speculative
 }
 -- name, npcid, mapx, mapy
 local factionNPCS = {
