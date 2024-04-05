@@ -162,9 +162,9 @@ local Filled = {
   [217338] = { 35, 850, 55000, 1550 }, -- values will need discovery when quests are available
   [217339] = { 40, 1000, 120000, 3000 }, -- values will need discovery when quests are available
   -- Phase 3 : only have some info for lowest tier
-  [221008] = { 42, 950, 38500, 1},
-  [221009] = { 45, 1300, 84500, 1},
-  [221010] = { 50, 1650, 160000, 1}, -- speculative
+  [221008] = { 42, 950, 38500, 1700}, -- exp speculative
+  [221009] = { 45, 1300, 84500, 2600}, -- exp speculative
+  [221010] = { 50, 1850, 154000, 3200}, -- exp speculative
 }
 -- name, npcid, mapx, mapy
 local factionNPCS = {
